@@ -8,6 +8,8 @@ opencv-python = "*"
 flask = "*"
 pillow = "*"
 numpy = "*"
+gunicorn = "*"
+waitress = "*"
 
 [dev-packages]
 

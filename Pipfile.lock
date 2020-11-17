@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "bc2911434270b22a7d23dcadd60fbc6b0aab47a75078a940058971626e2a5111"
+            "sha256": "6d50239c2d01aca1e2094d569bac002443d123fa8b9fa359ebc5f4e9ba54d2ce"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -31,6 +31,14 @@
             ],
             "index": "pypi",
             "version": "==1.1.2"
+        },
+        "gunicorn": {
+            "hashes": [
+                "sha256:1904bb2b8a43658807108d59c3f3d56c2b6121a701161de0ddf9ad140073c626",
+                "sha256:cd4a810dd51bf497552cf3f863b575dabd73d6ad6a91075b65936b151cbf4f9c"
+            ],
+            "index": "pypi",
+            "version": "==20.0.4"
         },
         "itsdangerous": {
             "hashes": [
@@ -187,6 +195,14 @@
             ],
             "index": "pypi",
             "version": "==8.0.1"
+        },
+        "waitress": {
+            "hashes": [
+                "sha256:1bb436508a7487ac6cb097ae7a7fe5413aefca610550baf58f0940e51ecfb261",
+                "sha256:3d633e78149eb83b60a07dfabb35579c29aac2d24bb803c18b26fb2ab1a584db"
+            ],
+            "index": "pypi",
+            "version": "==1.4.4"
         },
         "werkzeug": {
             "hashes": [
