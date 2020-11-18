@@ -7,3 +7,4 @@ numpy==1.19.4
 opencv-python==4.4.0.46
 Pillow==8.0.1
 Werkzeug==1.0.1
+gunicorn
