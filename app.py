@@ -1,3 +1,4 @@
+#!/home/inspiron3551/anaconda3/bin/python
 import os
 from flask import Flask, jsonify, request
 from PIL import Image
@@ -12,9 +13,13 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 def home():
     return jsonify(
         {'title': 'OpenCV REST API with Flask',
+        'face_filter': 'face_filter_url',
+        'face_detection': 'face_detection_url',
+        'github': 'https://github.com/codeperfectplus',
+        'documentation': 'documentation_url'
         })
 
-@app.route('/upload', methods=['POST'])
+@app.route('/face_filter', methods=['POST'])
 def handleUpload():
 
     try:
