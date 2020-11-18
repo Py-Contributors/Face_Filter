@@ -44,7 +44,3 @@ def handleUpload():
         'Image Saved': True,
         'Image_path': destination
         })
-
-            
-if __name__ == "__main__":
-    app.run(threaded=True, port=5000)
