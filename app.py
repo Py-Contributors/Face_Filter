@@ -16,7 +16,8 @@ def home():
         'Face Filter': 'face_filter_url',
         'Face Detection': 'face_detection_url',
         'github': 'https://github.com/codeperfectplus',
-        'documentation': 'documentation_url'
+        'documentation': 'documentation_url',
+        'author': ' '
         })
 
 @app.route('/facefilter', methods=['POST'])

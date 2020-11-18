@@ -1,6 +1,11 @@
-def main():
-    print('hello world')
-print('guru99')
+''' test script locally '''
+import requests
 
-# calling the function
-main()
+file_path = '/home/inspiron3551/Downloads/Pictures/30-of-the-most-influential-and-famous-entrepreneurs-from-all-over-the-world.jpg'
+
+files = {
+    'file': open(file_path, 'rb'),
+}
+
+response = requests.post('http://localhost:5000/facefilter', files=files)
+print(response.json())
