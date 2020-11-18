@@ -2,7 +2,7 @@
 import os
 from flask import Flask, jsonify, request
 from PIL import Image
-
+import cv2
 from facefilter import main
 
 app = Flask(__name__)
@@ -29,17 +29,19 @@ def handleUpload():
         print('Folder already exists')
 
     target = os.path.join(BASE_DIR, 'media')
-    image = request.files.getlist('file')[0]
-    image_name = image.filename
+    upload_image = request.files.getlist('file')[0]
+    mask_num = request.form["mask"]
+
+    image_name = upload_image.filename
 
     destination = "/".join([target, image_name])
     
     # saving input image to server
-    image.save(destination)
+    upload_image.save(destination)
 
-    img = main(destination)
-    img = Image.fromarray(img, 'RGB')
-    img.save(destination)
+    preprocessed_image = main(destination, mask_num)
+    preprocessed_image = Image.fromarray(preprocessed_image, 'RGB')
+    preprocessed_image.save(destination)
 
     return jsonify({
         'Image Saved': True,

@@ -25,9 +25,17 @@ def apply_mask(face: np.array, mask: np.array):
 
     return face_with_mask
 
-def main(input_image):
-    input_image = cv2.imread(input_image)        
-    mask = cv2.imread('filters/dog.png')
+def main(input_image, mask_num):
+
+    input_image = cv2.imread(input_image)
+
+    all_mask = {
+        1: "filters/dog.png",
+        2: "filters/cat.png",
+        3: "filters/dog2.png",
+    }
+    
+    mask = cv2.imread(all_mask[int(mask_num)])
 
     cascade = cv2.CascadeClassifier("assets/haarcascade_frontalface_default.xml")
 
@@ -35,7 +43,7 @@ def main(input_image):
         # Capture frame-by-frame
         frame_h, frame_w, _ = input_image.shape
         # Convert to black-and-white
-        gray = cv2.cvtColor(input_image, cv2.COLOR_BGR2GRAY)
+        gray = cv2.cvtColor(input_image, cv2.COLOR_RGB2GRAY)
         blackwhite = cv2.equalizeHist(gray)
         # Detect faces
         rects = cascade.detectMultiScale(
