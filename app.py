@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-@app.route('/', methods=['GET'])
+''' @app.route('/', methods=['GET'])
 def home():
     return jsonify(
         {'title': 'OpenCV REST API with Flask',
@@ -17,7 +17,7 @@ def home():
         'face_detection': 'face_detection_url',
         'github': 'https://github.com/codeperfectplus',
         'documentation': 'documentation_url'
-        })
+        }) '''
 
 @app.route('/face_filter', methods=['POST'])
 def handleUpload():
