@@ -67,7 +67,11 @@ def face_filter():
                 'file_name': image_name
             }
         )
-    return jsonify({'status': 'Create post request for face-filters'})
+    return jsonify(
+        {
+            'status': 'Create post request for face-filters'
+        }
+    )
 
 '''
 Face Detection Post Request
@@ -102,7 +106,11 @@ def face_detection():
                 'file_name': image_name
             }
         )
-    return jsonify({'status': 'Create post request for face-detection'})
+    return jsonify(
+        {
+            'status': 'Create post request for face-detection'
+        }
+    )
 
 
 ''' This is only for debugging and testing purpose'''
@@ -123,4 +131,8 @@ def test():
     output_image.save(image_path)
     
 
-    return jsonify({'status': True})
+    return jsonify(
+        {
+            'status': True
+        }
+    )

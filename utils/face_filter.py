@@ -1,7 +1,8 @@
-import sys
+import os
 import numpy as np
 import cv2
 
+from utility import BASE_DIR
 
 def apply_mask(face: np.array, mask: np.array):
     """Add the mask to the provided face, and return the face with mask."""
@@ -37,7 +38,7 @@ def faceFilter(input_image, mask_num):
     
     mask = cv2.imread(all_mask[int(mask_num)])
 
-    cascade = cv2.CascadeClassifier("assets/haarcascade_frontalface_default.xml")
+    cascade = cv2.CascadeClassifier(os.path.join(BASE_DIR, "assets/haarcascade_frontalface_default.xml"))
 
     while(True):
         # Capture frame-by-frame

@@ -7,13 +7,16 @@ from flask_wtf.file import FileField
 from wtforms import SubmitField
 from werkzeug.utils import secure_filename
 
-from utils.face_detection import detectedFace
-from utils.facefilter import faceFilter
+from utility import BASE_DIR, make_folder
+from utils import faceFilter
+from utils import facedetection
 
 app = Flask(__name__)
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-UPLOAD_DIR = os.path.join(BASE_DIR, 'uploads')
 
+# create folder for uploading image
+make_folder("uploads")
+UPLOAD_DIR = os.path.join(BASE_DIR, 'uploads')
+    
 # upload file configurations
 app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024 * 1024
 app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', 'jpeg']
@@ -29,33 +32,27 @@ def validate_image(stream):
 
 @app.errorhandler(413)
 def too_large(e):
-    return 'FIle is too large', 413
-
-class MyForm(FlaskForm):
-    file = FileField("File")
-    submit = SubmitField('Submit')
+    return 'File is too large', 413
 
 """ OpenCV FaceFilter RestAPI """
 @app.route('/', methods=['GET'])
 def home():
     return jsonify(
         {
-        'title': 'OpenCV REST API with Flask',
-        'face filter': url_for('face_filter'),
-        'face detection': url_for('face_detection'),
-        'github': 'https://github.com/codeperfectplus',
-        'documentation': 'documentation_url',
-        'author': ''
+            'title': 'OpenCV REST API with Flask',
+            'face filter': url_for('face_filter'),
+            'face detection': url_for('face_detection'),
+            'github': 'https://github.com/codeperfectplus',
+            'documentation': 'documentation_url',
+            'author': ''
         }
     )  
 
 ''' Face Detection Post Request
-
 Input post request:
     file: image_file
 output:
-    detected face and number of face
-'''
+    detected face and number of face '''
 @app.route('/facedetection', methods=['GET', 'POST'])
 def face_detection():
     if request.method == 'POST':
@@ -71,7 +68,7 @@ def face_detection():
 
             upload_file.save(image_path)
 
-            preprocess_img, num_of_faces = detectedFace(image_path)
+            preprocess_img, num_of_faces = facedetection(image_path)
             output_image = Image.fromarray(preprocess_img, 'RGB')
             output_image.save(image_path)
 
@@ -82,13 +79,16 @@ def face_detection():
                     'file_name': filename
                 }
             )
-    return jsonify({'status': 'Create post request for face-detection'})
+    return jsonify(
+        {
+            'status': 'Create post request for face-detection'
+        }
+    )
 
 ''' Face Filter post request.
-input post;
+input post:
     file: image_file
-    mask: num:<1-3>
-'''
+    mask: num:<1-3> '''
 @app.route('/facefilter', methods=['GET', 'POST'])
 def face_filter():
     if request.method == 'POST':
@@ -106,7 +106,7 @@ def face_filter():
 
             upload_file.save(image_path)
 
-            preprocess_image = main(image_path, mask_num)
+            preprocess_image = faceFilter(image_path, mask_num)
             output_image = Image.fromarray(preprocess_image, 'RGB')
             output_image.save(image_path)
 
@@ -116,8 +116,8 @@ def face_filter():
                     'file_name': filename
                 }
             )
-    return jsonify({'status': 'Create post request for face-filters'})
-
-
-if __name__ == "__main__":
-    app.run()
+    return jsonify(
+        {
+            'status': 'Create post request for face-filters'
+        }
+    )

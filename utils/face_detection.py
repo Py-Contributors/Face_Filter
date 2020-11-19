@@ -1,14 +1,19 @@
+import os
 import cv2
+from utility import BASE_DIR
 
-# Path
-face_path = 'assets/haarcascade_frontalface_default.xml'
-eye_path = 'assets/haarcascade_eye.xml'
+ASSETS_DIR = os.path.join(BASE_DIR, 'assets')
+
+face_path = os.path.join(ASSETS_DIR, 'haarcascade_frontalface_default.xml')
+eye_path = os.path.join(ASSETS_DIR, 'haarcascade_eye.xml')
+smile_path = os.path.join(ASSETS_DIR, 'haarcascade_smile.xml')
+
+print("facePath", face_path)
 face_cascade = cv2.CascadeClassifier(face_path)
 eye_cascade = cv2.CascadeClassifier(eye_path)
-smile_path = 'assets/haarcascade_smile.xml'
 smile_cascade = cv2.CascadeClassifier(smile_path)
 
-def detectedFace(img):
+def facedetection(img):
     img = cv2.imread(img)
 
     gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
