@@ -119,26 +119,3 @@ def face_filter():
             'status': 'Create post request for face-filters'
         }
     )
-
-@app.route('/test', methods=['GET', 'POST'])
-def test():
-    if request.method == 'POST':
-        upload_file = request.files['file']
-        mask_num = request.form['mask']
-
-        filename = secure_filename(upload_file.filename)
-        if filename != '':
-            file_ext = os.path.splitext(filename)[1]
-            if file_ext not in app.config["UPLOAD_EXTENSIONS"] or \
-                file_ext != validate_image(upload_file.stream):
-                return "Invalid Image", 400
-            
-            image_path = "/".join([UPLOAD_DIR, filename])
-
-            upload_file.save(image_path)
-
-            preprocess_image = faceFilter(image_path, mask_num)
-            output_image = Image.fromarray(preprocess_image, 'RGB')
-            output_image.save(image_path)
-
-            return redirect(url_for(image_path), code=301)
