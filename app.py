@@ -153,3 +153,7 @@ def test():
             'status': 'Create post request for face-filters'
         }
     )
+
+@app.route('/uploads/<image_dest>')
+def get_img(image_dest):
+  return send_file(f'uploads/{image_dest}')
