@@ -75,7 +75,7 @@ def face_detection():
             return jsonify(
                 {
                     'Total detected face': num_of_faces,
-                    'output_image': image_path,
+                    'output_image': f"http://opencv-api.herokuapp.com/uploads/{filename}"
                     'file_name': filename
                 }
             )
@@ -114,7 +114,7 @@ def face_filter():
 
             return jsonify(
                 {
-                    'output_image': image_path,
+                    'output_image': f"http://opencv-api.herokuapp.com/uploads/{filename}",
                     'file_name': filename
                 }
             )
