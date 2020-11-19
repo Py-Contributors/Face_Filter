@@ -1,7 +1,7 @@
 import os
 import imghdr
 from PIL import Image
-from flask import Flask, request, jsonify, url_for
+from flask import Flask, request, jsonify, url_for, redirect
 from werkzeug.utils import secure_filename
 
 from utility import BASE_DIR, make_folder
@@ -15,7 +15,7 @@ make_folder("uploads")
 UPLOAD_DIR = os.path.join(BASE_DIR, 'uploads')
 
 # app configurations
-app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024 * 1024
+app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024 * 50
 app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.jpeg']
 
 #validating file contents
@@ -86,6 +86,7 @@ def face_detection():
 input post:
     file: image_file
     mask: num:<1-3> '''
+
 @app.route('/facefilter', methods=['GET', 'POST'])
 def face_filter():
     if request.method == 'POST':
@@ -118,3 +119,26 @@ def face_filter():
             'status': 'Create post request for face-filters'
         }
     )
+
+@app.route('/test', methods=['GET', 'POST'])
+def test():
+    if request.method == 'POST':
+        upload_file = request.files['file']
+        mask_num = request.form['mask']
+
+        filename = secure_filename(upload_file.filename)
+        if filename != '':
+            file_ext = os.path.splitext(filename)[1]
+            if file_ext not in app.config["UPLOAD_EXTENSIONS"] or \
+                file_ext != validate_image(upload_file.stream):
+                return "Invalid Image", 400
+            
+            image_path = "/".join([UPLOAD_DIR, filename])
+
+            upload_file.save(image_path)
+
+            preprocess_image = faceFilter(image_path, mask_num)
+            output_image = Image.fromarray(preprocess_image, 'RGB')
+            output_image.save(image_path)
+
+            return redirect(url_for(image_path), code=301)
