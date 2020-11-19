@@ -1,7 +1,7 @@
 import os
 import imghdr
 from PIL import Image
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, url_for
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField
 from wtforms import SubmitField
@@ -35,6 +35,27 @@ class MyForm(FlaskForm):
     file = FileField("File")
     submit = SubmitField('Submit')
 
+""" OpenCV FaceFilter RestAPI """
+@app.route('/', methods=['GET'])
+def home():
+    return jsonify(
+        {
+        'title': 'OpenCV REST API with Flask',
+        'face filter': url_for('face_filter'),
+        'face detection': url_for('face_detection'),
+        'github': 'https://github.com/codeperfectplus',
+        'documentation': 'documentation_url',
+        'author': ''
+        }
+    )  
+
+''' Face Detection Post Request
+
+Input post request:
+    file: image_file
+output:
+    detected face and number of face
+'''
 @app.route('/facedetection', methods=['GET', 'POST'])
 def face_detection():
     if request.method == 'POST':
@@ -63,6 +84,11 @@ def face_detection():
             )
     return jsonify({'status': 'Create post request for face-detection'})
 
+''' Face Filter post request.
+input post;
+    file: image_file
+    mask: num:<1-3>
+'''
 @app.route('/facefilter', methods=['GET', 'POST'])
 def face_filter():
     if request.method == 'POST':
