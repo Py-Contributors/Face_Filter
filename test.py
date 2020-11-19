@@ -2,9 +2,9 @@
 import requests
 
 local_url = 'http://localhost:5000/facedetection'
-heroku_url = 'https://opencv-api.herokuapp.com/facedetection'
+heroku_url = 'https://opencv-api.herokuapp.com/facefilter'
 
-file_path = '/home/inspiron3551/Downloads/Pictures/leaders2.jpg'
+file_path = '/home/inspiron3551/Downloads/Pictures/564ce7fd2491f990008b6498.jpeg'
 
 files = {
     'file': open(file_path, 'rb'),
@@ -12,7 +12,7 @@ files = {
 data = {
     'mask': 2
 }
-response = requests.post(local_url, files=files)
+response = requests.post(local_url, files=files, data=data)
 print('Respone: ', response)
 print(response.text)
 #print(response.json())

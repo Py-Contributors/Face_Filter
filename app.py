@@ -2,9 +2,6 @@ import os
 import imghdr
 from PIL import Image
 from flask import Flask, request, jsonify, url_for
-from flask_wtf import FlaskForm
-from flask_wtf.file import FileField
-from wtforms import SubmitField
 from werkzeug.utils import secure_filename
 
 from utility import BASE_DIR, make_folder
@@ -16,10 +13,10 @@ app = Flask(__name__)
 # create folder for uploading image
 make_folder("uploads")
 UPLOAD_DIR = os.path.join(BASE_DIR, 'uploads')
-    
-# upload file configurations
+
+# app configurations
 app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024 * 1024
-app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', 'jpeg']
+app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.jpeg']
 
 #validating file contents
 def validate_image(stream):
