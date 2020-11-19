@@ -68,7 +68,7 @@ def face_detection():
 
             preprocess_img, num_of_faces = faceDetection(image_path)
             # change BGR image RGb
-            preprocess_image = cv2.cvtColor(preprocess_image, cv2.COLOR_BGR2RGB)
+            preprocess_img = cv2.cvtColor(preprocess_img, cv2.COLOR_BGR2RGB)
             output_image = Image.fromarray(preprocess_img, 'RGB')
             output_image.save(image_path)
 
