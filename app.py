@@ -1,124 +1,97 @@
-#!/home/inspiron3551/anaconda3/bin/python
 import os
-from flask import Flask, jsonify, request, redirect, send_file, url_for, render_template
+import imghdr
 from PIL import Image
-import cv2
+from flask import Flask, request, jsonify
+from flask_wtf import FlaskForm
+from flask_wtf.file import FileField
+from wtforms import SubmitField
+from werkzeug.utils import secure_filename
 
-from facefilter import main
-from face_detection import detectedFace
+from utils.face_detection import detectedFace
+from utils.facefilter import faceFilter
 
 app = Flask(__name__)
-
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_DIR = os.path.join(BASE_DIR, 'uploads')
 
-""" 
-OpenCV FaceFilter RestAPI
-"""
-@app.route('/', methods=['GET'])
-def home():
-    return jsonify(
-        {
-        'title': 'OpenCV REST API with Flask',
-        'face filter': url_for('face_filter'),
-        'face detection': url_for('face_detection'),
-        'github': 'https://github.com/codeperfectplus',
-        'documentation': 'documentation_url',
-        'author': 'Deepak Raj'
-        }
-    )        
-'''
-Face Filter post request.
-input post;
-    file: image_file
-    mask: num:<1-3>
-'''
-@app.route('/facefilter', methods=['GET', 'POST'])
-def face_filter():
+# upload file configurations
+app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024 * 1024
+app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', 'jpeg']
 
-    if request.method == 'POST':
-        try:
-            os.mkdir('media')
-        except Exception:
-            print('Folder already exists')
+#validating file contents
+def validate_image(stream):
+    header = stream.read(512)
+    stream.seek(0)
+    format = imghdr.what(None, header)
+    if not format:
+        return None
+    return '.'+ (format if format != 'jpeg' else 'jpg')
 
-        media_root = os.path.join(BASE_DIR, 'media')
-        upload_image = request.files.getlist('file')[0]
-        mask_num = request.form["mask"]
+@app.errorhandler(413)
+def too_large(e):
+    return 'FIle is too large', 413
 
-        image_name = upload_image.filename
+class MyForm(FlaskForm):
+    file = FileField("File")
+    submit = SubmitField('Submit')
 
-        image_path = "/".join([media_root, image_name])
-        
-        # saving input image to server
-        upload_image.save(image_path)
-
-        # main() function is for apply mask on image
-        preprocessed_image = main(image_path, mask_num)
-        preprocessed_image = Image.fromarray(preprocessed_image, 'RGB')
-        preprocessed_image.save(image_path)
-
-        return jsonify(
-            {
-                'output_image': image_path,
-                'file_name': image_name
-            }
-        )
-    return jsonify({'status': 'Create post request for face-filters'})
-
-'''
-Face Detection Post Request
-
-Input post request:
-    file: image_file
-output:
-    detected face and number of face
-'''
-@app.route('/facedetection', methods=['GET','post'])
+@app.route('/facedetection', methods=['GET', 'POST'])
 def face_detection():
-
     if request.method == 'POST':
-        media_root = os.path.join(BASE_DIR, 'media')
-        upload_image = request.files.getlist('file')[0]
+        upload_file = request.files['file']
+        filename = secure_filename(upload_file.filename)
+        if filename != '':
+            file_ext = os.path.splitext(filename)[1]
+            if file_ext not in app.config["UPLOAD_EXTENSIONS"] or \
+                file_ext != validate_image(upload_file.stream):
+                return "Invalid Image", 400
+            
+            image_path = "/".join([UPLOAD_DIR, filename])
 
-        image_name = upload_image.filename
+            upload_file.save(image_path)
 
-        image_path = "/".join([media_root, image_name])
-        
-        # saving input image to server
-        upload_image.save(image_path)
+            preprocess_img, num_of_faces = detectedFace(image_path)
+            output_image = Image.fromarray(preprocess_img, 'RGB')
+            output_image.save(image_path)
 
-        # main() function is for apply mask on image
-        preprocessed_image, num_of_faces = detectedFace(image_path)
-        preprocessed_image = Image.fromarray(preprocessed_image, 'RGB')
-        preprocessed_image.save(image_path)
-
-        return jsonify(
-            {
-                'Total detected face': num_of_faces,
-                'output_image': image_path,
-                'file_name': image_name
-            }
-        )
+            return jsonify(
+                {
+                    'Total detected face': num_of_faces,
+                    'output_image': image_path,
+                    'file_name': filename
+                }
+            )
     return jsonify({'status': 'Create post request for face-detection'})
 
+@app.route('/facefilter', methods=['GET', 'POST'])
+def face_filter():
+    if request.method == 'POST':
+        upload_file = request.files['file']
+        mask_num = request.form['mask']
 
-''' This is only for debugging and testing purpose'''
-@app.route('/test', methods=['post'])
-def test():
+        filename = secure_filename(upload_file.filename)
+        if filename != '':
+            file_ext = os.path.splitext(filename)[1]
+            if file_ext not in app.config["UPLOAD_EXTENSIONS"] or \
+                file_ext != validate_image(upload_file.stream):
+                return "Invalid Image", 400
+            
+            image_path = "/".join([UPLOAD_DIR, filename])
 
-    media_root = os.path.join(BASE_DIR, 'media')
-    upload_image = request.files.getlist('file')[0]
+            upload_file.save(image_path)
 
-    image_name = upload_image.filename
+            preprocess_image = main(image_path, mask_num)
+            output_image = Image.fromarray(preprocess_image, 'RGB')
+            output_image.save(image_path)
 
-    image_path = "/".join([media_root, image_name])
-    
-    # saving input image to server
-    upload_image.save(image_path)
+            return jsonify(
+                {
+                    'output_image': image_path,
+                    'file_name': filename
+                }
+            )
+    return jsonify({'status': 'Create post request for face-filters'})
 
-    # main() function is for apply mask on image
-    preprocessed_image, num_of_faces = detectedFace(image_path)
-    preprocessed_image = Image.fromarray(preprocessed_image, 'RGB')
-    preprocessed_image.save(image_path)
-    
-    return send_file(image_path, mimetype='image/gif')
+
+if __name__ == "__main__":
+    app.run()

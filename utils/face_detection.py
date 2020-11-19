@@ -11,7 +11,7 @@ smile_cascade = cv2.CascadeClassifier(smile_path)
 def detectedFace(img):
     img = cv2.imread(img)
 
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 
     faces = face_cascade.detectMultiScale(gray, 1.4, 5)
 
