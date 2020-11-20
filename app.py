@@ -42,8 +42,8 @@ def home():
             'title': 'OpenCV REST API with Flask',
             'API Version' : '0.0.1-alpha',
             'documentation': 'documentation_url',
-            'face filter': 'https://opencv-api.herokuapp.com/face_filter',
-            'face detection': 'https://opencv-api.herokuapp.com/face_detection',
+            'face filter': 'https://opencv-api.herokuapp.com/facefilter',
+            'face detection': 'https://opencv-api.herokuapp.com/facedetection',
             'author': 'Deepak Raj',
             'github': 'https://github.com/codeperfectplus',
             'email': 'deepak008@live.com',
@@ -91,8 +91,11 @@ def face_detection():
                 }
             )
     return jsonify(
-        {
-            'status': 'Create post request for face-detection'
+        {   
+            'title': 'OpenCV REST API with Flask',
+            'API Version' : '0.0.1-alpha',
+            'status': 'Create post request for face-detection',
+            'docs': 'docs_url'
         }
     )
 
@@ -133,8 +136,11 @@ def face_filter():
                 }
             )
     return jsonify(
-        {
-            'status': 'Create post request for face-filters'
+        {   
+            'title': 'OpenCV REST API with Flask',
+            'API Version' : '0.0.1-alpha',
+            'status': 'Create post request for face-filters',
+            'docs': 'docs_url'
         }
     )
 
