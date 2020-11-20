@@ -1,6 +1,7 @@
 import os
 import imghdr
 import cv2
+from datetime import datetime
 from PIL import Image
 from flask import Flask, request, jsonify, url_for, redirect, send_file
 from werkzeug.utils import secure_filename
@@ -46,7 +47,8 @@ def home():
             'author': 'Deepak Raj',
             'github': 'https://github.com/codeperfectplus',
             'email': 'deepak008@live.com',
-            'image-policy': 'Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.'
+            'image-policy': 'Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.',
+            'time': datetime.now()
         }
     )  
 
@@ -83,7 +85,8 @@ def face_detection():
                     'file_name': filename,
                     'output_image': f"https://opencv-api.herokuapp.com/uploads/{filename}",
                     'API Version' : '0.0.1-alpha',
-                    'image-policy': 'Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.'
+                    'image-policy': 'Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.',
+                    'time': datetime.now()
                     
                 }
             )
