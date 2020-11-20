@@ -18,6 +18,7 @@ UPLOAD_DIR = os.path.join(BASE_DIR, 'uploads')
 # app configurations
 app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024 * 50
 app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.jpeg']
+app.config['JSON_SORT_KEYS'] = False
 
 #validating file contents
 def validate_image(stream):
@@ -38,11 +39,14 @@ def home():
     return jsonify(
         {
             'title': 'OpenCV REST API with Flask',
-            'face filter': url_for('face_filter'),
-            'face detection': url_for('face_detection'),
-            'github': 'https://github.com/codeperfectplus',
+            'API Version' : '0.0.1-alpha',
             'documentation': 'documentation_url',
-            'author': ''
+            'face filter': 'https://opencv-api.herokuapp.com/face_filter',
+            'face detection': 'https://opencv-api.herokuapp.com/face_detection',
+            'author': 'Deepak Raj',
+            'github': 'https://github.com/codeperfectplus',
+            'email': 'deepak008@live.com',
+            'image-policy': 'Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.'
         }
     )  
 
@@ -73,10 +77,14 @@ def face_detection():
             output_image.save(image_path)
 
             return jsonify(
-                {
+                {   
+                    'title': 'OpenCV REST API with Flask',
                     'Total detected face': num_of_faces,
-                    'output_image': f"http://opencv-api.herokuapp.com/uploads/{filename}",
-                    'file_name': filename
+                    'file_name': filename,
+                    'output_image': f"https://opencv-api.herokuapp.com/uploads/{filename}",
+                    'API Version' : '0.0.1-alpha',
+                    'image-policy': 'Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.'
+                    
                 }
             )
     return jsonify(
@@ -113,9 +121,12 @@ def face_filter():
             output_image.save(image_path)
 
             return jsonify(
-                {
-                    'output_image': f"http://opencv-api.herokuapp.com/uploads/{filename}",
-                    'file_name': filename
+                {   
+                    'title': 'OpenCV REST API with Flask',
+                    'API Version' : '0.0.1-alpha',
+                    'output_image': f"https://opencv-api.herokuapp.com/uploads/{filename}",
+                    'file_name': filename,
+                    'image-policy': 'Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.'
                 }
             )
     return jsonify(
@@ -124,35 +135,6 @@ def face_filter():
         }
     )
 
-@app.route('/test', methods=['GET', 'POST'])
-def test():
-    if request.method == 'POST':
-        upload_file = request.files['file']
-        mask_num = request.form['mask']
-
-        filename = secure_filename(upload_file.filename)
-        if filename != '':
-            file_ext = os.path.splitext(filename)[1]
-            if file_ext not in app.config["UPLOAD_EXTENSIONS"] or \
-                file_ext != validate_image(upload_file.stream):
-                return "Invalid Image", 400
-            
-            image_path = "/".join([UPLOAD_DIR, filename])
-
-            upload_file.save(image_path)
-
-            preprocess_image = faceFilter(image_path, mask_num)
-            preprocess_image = cv2.cvtColor(preprocess_image, cv2.COLOR_BGR2RGB)
-            output_image = Image.fromarray(preprocess_image)
-            output_image.save(image_path)
-
-            return send_file(image_path, mimetype='image/gif')
-
-    return jsonify(
-        {
-            'status': 'Create post request for face-filters'
-        }
-    )
 
 @app.route('/uploads/<image_dest>')
 def get_img(image_dest):
