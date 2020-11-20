@@ -1,17 +1,17 @@
 import os
 import cv2
-from utility import BASE_DIR
+from settings import BASE_DIR
 
-ASSETS_DIR = os.path.join(BASE_DIR, 'assets')
+ASSETS_DIR = os.path.join(BASE_DIR, "assets")
 
-face_path = os.path.join(ASSETS_DIR, 'haarcascade_frontalface_default.xml')
-eye_path = os.path.join(ASSETS_DIR, 'haarcascade_eye.xml')
-smile_path = os.path.join(ASSETS_DIR, 'haarcascade_smile.xml')
+face_path = os.path.join(ASSETS_DIR, "haarcascade_frontalface_default.xml")
+eye_path = os.path.join(ASSETS_DIR, "haarcascade_eye.xml")
+smile_path = os.path.join(ASSETS_DIR, "haarcascade_smile.xml")
 
-print("facePath", face_path)
 face_cascade = cv2.CascadeClassifier(face_path)
 eye_cascade = cv2.CascadeClassifier(eye_path)
 smile_cascade = cv2.CascadeClassifier(smile_path)
+
 
 def faceDetection(img):
     img = cv2.imread(img)
@@ -24,25 +24,26 @@ def faceDetection(img):
         x, y, width, height = face
         # draw a rectangle for detection
         cv2.rectangle(
-                img,
-                (x, y),
-                (x + width, y + height),
-                (0, 0, 255),
-                1,
+            img,
+            (x, y),
+            (x + width, y + height),
+            (0, 0, 255),
+            1,
         )
-        roi_gray = gray[y:y+height, x:x+width]
-        roi_color = img[y:y+height, x:x+width]
+        roi_gray = gray[y:y + height, x:x + width]
+        roi_color = img[y:y + height, x:x + width]
 
         smiles = smile_cascade.detectMultiScale(roi_gray)
-        for (sx, sy, sw, sh) in smiles: 
-            cv2.rectangle(roi_color, (sx, sy), ((sx + sw), (sy + sh)), (0, 0, 255), 2) 
+        for (sx, sy, sw, sh) in smiles:
+            cv2.rectangle(roi_color, (sx, sy), ((sx + sw), (sy + sh)), (0, 0, 255), 2)
 
         eyes = eye_cascade.detectMultiScale(roi_gray)
         for (ex, ey, ew, eh) in eyes:
             cv2.rectangle(
-                    roi_color,
-                    (ex, ey),
-                    (ex+ew, ey+eh),
-                    (0, 255, 0),
-                    2,)
+                roi_color,
+                (ex, ey),
+                (ex + ew, ey + eh),
+                (0, 255, 0),
+                2,
+            )
     return img, len(faces)
