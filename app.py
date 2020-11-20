@@ -29,7 +29,7 @@ def validate_image(stream):
     format = imghdr.what(None, header)
     if not format:
         return None
-    return "." + (format if format != "gif" else "jpg")
+    return "." + (format if format != "jpeg" else "jpg")
 
 
 @app.errorhandler(413)
@@ -51,7 +51,7 @@ def home():
             "github": "https://github.com/codeperfectplus",
             "email": "deepak008@live.com",
             "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
-            "supported_image_type": "{Jpeg, Jpg, Png}",
+            "supported_image_type": "{Jpg, Png}",
             "time": datetime.now(),
         }
     )
