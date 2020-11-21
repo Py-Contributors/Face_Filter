@@ -161,8 +161,20 @@ def face_filter():
 def get_img(image_dest):
     return send_file(f"uploads/{image_dest}")
 
+# delete one image only
+@app.route("/uploads/<image_dest>/delete")
+def delete_image(image_dest):
+    return jsonify(
+        {
+            'image_path': image_dest,
+            'delete': True,
+            'status': os.remove(os.path.join(UPLOAD_DIR, image_dest))
+        }
+    )
+
+# delete entire folder
 @app.route("/command/delete")
-def get_dir():
+def delete_dir():
     return jsonify(
         {   
             'status': "clearning Data",
