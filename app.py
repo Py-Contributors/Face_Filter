@@ -166,5 +166,6 @@ def get_dir():
     return jsonify(
         {   
             'status': "clearning Data",
-            'upload_images': shutil.rmtree(os.path.join(UPLOAD_DIR))
+            'upload_images': shutil.rmtree(os.path.join(UPLOAD_DIR)),
+            'creating_empty_folder': make_folder('uploads')
         })

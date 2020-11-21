@@ -9,7 +9,7 @@ files = {
     "file": open(file_path, "rb"),
 }
 data = {"mask": 1}
-response = requests.post(heroku_url, files=files)
+response = requests.post(local_url, files=files)
 print("Respone: ", response)
 print(response.text)
 # print(response.json())
