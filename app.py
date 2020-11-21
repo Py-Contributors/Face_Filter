@@ -1,6 +1,7 @@
 import os
 import imghdr
 import cv2
+import shutil
 from datetime import datetime
 from PIL import Image
 from flask import Flask, request, jsonify, send_file
@@ -159,3 +160,11 @@ def face_filter():
 @app.route("/uploads/<image_dest>")
 def get_img(image_dest):
     return send_file(f"uploads/{image_dest}")
+
+@app.route("/command/delete")
+def get_dir():
+    return jsonify(
+        {   
+            'status': "clearning Data",
+            'upload_images': shutil.rmtree(os.path.join(UPLOAD_DIR))
+        })
