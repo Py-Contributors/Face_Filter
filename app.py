@@ -8,7 +8,7 @@ from werkzeug.utils import secure_filename
 
 from settings import BASE_DIR, make_folder
 from settings import title, base_url, api_version
-from utils import faceFilter, faceDetection
+from utils import faceFilter, faceDetection, faceDetectionDNN
 
 app = Flask(__name__)
 
@@ -80,7 +80,7 @@ def face_detection():
 
             upload_file.save(image_path)
 
-            preprocess_img, num_of_faces = faceDetection(image_path)
+            preprocess_img = faceDetectionDNN(image_path)
             # change BGR image RGb
             preprocess_img = cv2.cvtColor(preprocess_img, cv2.COLOR_BGR2RGB)
             output_image = Image.fromarray(preprocess_img, "RGB")
@@ -89,8 +89,7 @@ def face_detection():
             return jsonify(
                 {
                     "title": title,
-                    "api_version": api_version,
-                    "total_detected_face": num_of_faces,
+                    "api_version": api_version,                    
                     "file_name": filename,
                     "output_image_url": f"{base_url}/uploads/{filename}",
                     "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
@@ -160,3 +159,4 @@ def face_filter():
 @app.route("/uploads/<image_dest>")
 def get_img(image_dest):
     return send_file(f"uploads/{image_dest}")
+
