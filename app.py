@@ -164,20 +164,21 @@ def get_img(image_dest):
 # delete one image only
 @app.route("/uploads/<image_dest>/delete")
 def delete_image(image_dest):
+    os.remove(os.path.join(UPLOAD_DIR, image_dest))
     return jsonify(
         {
-            'image_path': image_dest,
-            'delete': True,
-            'status': os.remove(os.path.join(UPLOAD_DIR, image_dest))
+            'file_name': image_dest,
+            'delete': True
         }
     )
 
 # delete entire folder
 @app.route("/command/delete")
 def delete_dir():
+    shutil.rmtree(os.path.join(UPLOAD_DIR)),
+    make_folder('uploads')
     return jsonify(
         {   
-            'status': "clearning Data",
-            'upload_images': shutil.rmtree(os.path.join(UPLOAD_DIR)),
-            'creating_empty_folder': make_folder('uploads')
-        })
+            'status': "clearning uploads folder"
+        }
+    )
