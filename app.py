@@ -1,16 +1,18 @@
 import os
-import imghdr
 import cv2
+import imghdr
 import shutil
 from datetime import datetime
-from PIL import Image
-from flask import Flask, request, jsonify, send_file
-from werkzeug.utils import secure_filename
 
-from settings import BASE_DIR, UPLOADS_DIR
+from PIL import Image
+from werkzeug.utils import secure_filename
+from flask import Flask, request, jsonify, send_file
+
 from settings import make_folder
+from settings import BASE_DIR, UPLOADS_DIR
+from utils import faceFilter, faceDetectionDNN
 from settings import title, base_url, api_version, documentation_url
-from utils import faceFilter, faceDetection, faceDetectionDNN
+
 
 app = Flask(__name__)
 
@@ -102,7 +104,7 @@ def face_detection():
             "title": title,
             "API Version": api_version,
             "status": "Create post request for face-detection",
-            "docs": "docs_url",
+            "docs": f"{documentation_url}",
         }
     )
 
@@ -151,7 +153,7 @@ def face_filter():
             "title": title,
             "API Version": api_version,
             "status": "Create post request for face-filters",
-            "docs": "docs_url",
+            "docs": f"{documentation_url}",
         }
     )
 
@@ -168,7 +170,7 @@ def delete_image(image_dest):
     return jsonify(
         {
             'file_name': image_dest,
-            'delete': True
+            'delete_it_from_server': True
         }
     )
 
