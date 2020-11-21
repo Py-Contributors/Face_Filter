@@ -2,11 +2,11 @@ import os
 import numpy as np
 import cv2
 
-from settings import BASE_DIR
+from settings import ASSETS_DIR
 
 # Global Declarations
-proto = os.path.join(BASE_DIR, 'assets/deploy.prototxt.txt')
-model=os.path.join(BASE_DIR, 'assets/res10_300x300_ssd_iter_140000.caffemodel')
+proto = os.path.join(ASSETS_DIR, 'deploy.prototxt.txt')
+model=os.path.join(ASSETS_DIR, 'res10_300x300_ssd_iter_140000.caffemodel')
 confThresh=0.8
 net = cv2.dnn.readNetFromCaffe(proto, model)
 

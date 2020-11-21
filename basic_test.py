@@ -1,8 +1,7 @@
 import os
 
 from manage import app
-from settings import BASE_DIR
-
+from settings import ASSETS_DIR
 
 def test_app():
     # test for get request
@@ -12,7 +11,7 @@ def test_app():
     assert type(response.data) == bytes
 
     # post request test for face detection
-    file_path = os.path.join(BASE_DIR, 'assets/sample.jpg')
+    file_path = os.path.join(ASSETS_DIR, 'sample.jpg')
 
     files = {
     "file": open(file_path, "rb"),
@@ -23,7 +22,7 @@ def test_app():
     assert type(response.data) == bytes
 
     # post request test for face filters
-    file_path = os.path.join(BASE_DIR, 'assets/sample2.jpg')
+    file_path = os.path.join(ASSETS_DIR, 'sample2.jpg')
 
     data = {
         'mask':1

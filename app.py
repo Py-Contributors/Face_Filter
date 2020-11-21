@@ -7,15 +7,15 @@ from PIL import Image
 from flask import Flask, request, jsonify, send_file
 from werkzeug.utils import secure_filename
 
-from settings import BASE_DIR, make_folder
-from settings import title, base_url, api_version
+from settings import BASE_DIR, UPLOADS_DIR
+from settings import make_folder
+from settings import title, base_url, api_version, documentation_url
 from utils import faceFilter, faceDetection, faceDetectionDNN
 
 app = Flask(__name__)
 
 # create folder for uploading image
 make_folder("uploads")
-UPLOAD_DIR = os.path.join(BASE_DIR, "uploads")
 
 # app configurations
 app.config["MAX_CONTENT_LENGTH"] = 1024 * 1024 * 50
@@ -45,7 +45,7 @@ def home():
         {
             "title": title,
             "api_version": api_version,
-            "documentation": "documentation_url",
+            "documentation": f"{documentation_url}",
             "face_filter_url": f"{base_url}/facefilter",
             "face_detection_url": f"{base_url}/facedetection",
             "Author": "Deepak Raj",
@@ -77,7 +77,7 @@ def face_detection():
             ] or file_ext != validate_image(upload_file.stream):
                 return "Invalid Image", 400
 
-            image_path = "/".join([UPLOAD_DIR, filename])
+            image_path = "/".join([UPLOADS_DIR, filename])
 
             upload_file.save(image_path)
 
@@ -127,7 +127,7 @@ def face_filter():
             ] or file_ext != validate_image(upload_file.stream):
                 return "Invalid Image", 400
 
-            image_path = "/".join([UPLOAD_DIR, filename])
+            image_path = "/".join([UPLOADS_DIR, filename])
 
             upload_file.save(image_path)
 
@@ -164,7 +164,7 @@ def get_img(image_dest):
 # delete one image only
 @app.route("/uploads/<image_dest>/delete")
 def delete_image(image_dest):
-    os.remove(os.path.join(UPLOAD_DIR, image_dest))
+    os.remove(os.path.join(UPLOADS_DIR, image_dest))
     return jsonify(
         {
             'file_name': image_dest,
@@ -175,7 +175,7 @@ def delete_image(image_dest):
 # delete entire folder
 @app.route("/command/delete")
 def delete_dir():
-    shutil.rmtree(os.path.join(UPLOAD_DIR)),
+    shutil.rmtree(os.path.join(UPLOADS_DIR)),
     make_folder('uploads')
     return jsonify(
         {   

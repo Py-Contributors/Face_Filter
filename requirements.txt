@@ -11,3 +11,4 @@ Pillow==8.0.1
 Werkzeug==1.0.1
 Flask-WTF==0.14.3
 WTForms==2.3.3
+pytest==6.1.2

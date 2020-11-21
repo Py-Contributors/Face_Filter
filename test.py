@@ -1,17 +1,17 @@
-""" test script locally """
 import os
 import requests
 
-from settings import BASE_DIR
+from settings import ASSETS_DIR
+from settings import base_url
 
 # chnage it to facefilter for facefilter test
 post_request = 'facedetection'
 
 if post_request == 'facefilter':
     
-    url = "https://opencv-api.herokuapp.com/facefilter"
+    url = f"{base_url}/facefilter"
 
-    file_path = os.path.join(BASE_DIR, 'assets/sample.jpg')
+    file_path = os.path.join(ASSETS_DIR, 'sample.jpg')
     files = {
         "file": open(file_path, "rb"),
     }
@@ -22,9 +22,9 @@ if post_request == 'facefilter':
 
 if post_request == 'facedetection':
 
-    url = "https://opencv-api.herokuapp.com/facedetection"
+    url = f"{base_url}/facedetection"
 
-    file_path = os.path.join(BASE_DIR, 'assets/sample2.jpg')
+    file_path = os.path.join(ASSETS_DIR, 'sample2.jpg')
     files = {
         "file": open(file_path, "rb"),
     }

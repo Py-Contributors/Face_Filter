@@ -2,7 +2,7 @@ import os
 import numpy as np
 import cv2
 
-from settings import BASE_DIR
+from settings import ASSETS_DIR
 
 
 def apply_mask(face: np.array, mask: np.array):
@@ -42,7 +42,7 @@ def faceFilter(input_image, mask_num):
     mask = cv2.imread(all_mask[int(mask_num)])
 
     cascade = cv2.CascadeClassifier(
-        os.path.join(BASE_DIR, "assets/haarcascade_frontalface_default.xml")
+        os.path.join(ASSETS_DIR, "haarcascade_frontalface_default.xml")
     )
 
     while True:

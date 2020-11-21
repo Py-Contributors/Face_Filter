@@ -1,8 +1,7 @@
 import os
 import cv2
-from settings import BASE_DIR
+from settings import BASE_DIR, ASSETS_DIR
 
-ASSETS_DIR = os.path.join(BASE_DIR, "assets")
 
 face_path = os.path.join(ASSETS_DIR, "haarcascade_frontalface_default.xml")
 eye_path = os.path.join(ASSETS_DIR, "haarcascade_eye.xml")
