@@ -9,7 +9,7 @@ from werkzeug.utils import secure_filename
 from flask import Flask, request, jsonify, send_file
 
 from settings import make_folder
-from settings import BASE_DIR, UPLOADS_DIR
+from settings import UPLOADS_DIR, ASSETS_DIR
 from utils import faceFilter, faceDetectionDNN
 from settings import title, base_url, api_version, documentation_url
 
@@ -169,13 +169,26 @@ def get_img(image_dest):
 # delete one image only
 @app.route("/uploads/<image_dest>/delete")
 def delete_image(image_dest):
-    os.remove(os.path.join(UPLOADS_DIR, image_dest))
+    try:
+        os.remove(os.path.join(UPLOADS_DIR, image_dest))
+    except:
+        print("shutil error! while deleting the image")
     return jsonify({"file_name": image_dest, "delete_it_from_server": True})
 
 
 # delete entire folder
 @app.route("/command/delete")
 def delete_dir():
-    shutil.rmtree(os.path.join(UPLOADS_DIR)),
+    """ recreating uploads dir and copying smaple.jpg file again. 
+    It's for pytest purpose in both dir.
+     """
+    try:
+        shutil.rmtree(os.path.join(UPLOADS_DIR)),
+    except:
+        print("shutil error! while deleting the uploads dir.")
     make_folder("uploads")
+    try:
+        shutil.copy(os.path.join(ASSETS_DIR, "sample.jpg"), os.path.join(UPLOADS_DIR, "sample.jpg"))
+    except:
+        print("shutil error! copy error from assets to uploads.")
     return jsonify({"status": "clearning uploads folder"})

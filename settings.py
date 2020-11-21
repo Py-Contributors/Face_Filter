@@ -14,7 +14,5 @@ documentation_url = "documentation_url"
 
 # create folder in root dir
 def make_folder(folder_name):
-    try:
+    if not os.path.isdir(folder_name):
         os.mkdir(folder_name)
-    except Exception:
-        print("folder already exists")
