@@ -1,6 +1,6 @@
 import os
 
-from .manage import app
+from manage import app
 from settings import ASSETS_DIR
 
 

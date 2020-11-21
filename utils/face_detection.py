@@ -29,8 +29,8 @@ def faceDetection(img):
             (0, 0, 255),
             1,
         )
-        roi_gray = gray[y:y + height, x:x + width]
-        roi_color = img[y:y + height, x:x + width]
+        roi_gray = gray[y : y + height, x : x + width]
+        roi_color = img[y : y + height, x : x + width]
 
         smiles = smile_cascade.detectMultiScale(roi_gray)
         for (sx, sy, sw, sh) in smiles:

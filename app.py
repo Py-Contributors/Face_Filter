@@ -23,7 +23,7 @@ make_folder("uploads")
 app.config["MAX_CONTENT_LENGTH"] = 1024 * 1024 * 50
 app.config["UPLOAD_EXTENSIONS"] = [".jpg", ".png", ".jpeg"]
 app.config["JSON_SORT_KEYS"] = False
-
+app.config["JSONIFY_PRETTYPRINT_REGULAR"] = True
 
 # validating file contents
 def validate_image(stream):
@@ -41,6 +41,8 @@ def too_large(e):
 
 
 """ OpenCV FaceFilter RestAPI """
+
+
 @app.route("/", methods=["GET"])
 def home():
     return jsonify(
@@ -92,7 +94,7 @@ def face_detection():
             return jsonify(
                 {
                     "title": title,
-                    "api_version": api_version,                    
+                    "api_version": api_version,
                     "file_name": filename,
                     "output_image_url": f"{base_url}/uploads/{filename}",
                     "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
@@ -163,24 +165,17 @@ def face_filter():
 def get_img(image_dest):
     return send_file(f"uploads/{image_dest}")
 
+
 # delete one image only
 @app.route("/uploads/<image_dest>/delete")
 def delete_image(image_dest):
     os.remove(os.path.join(UPLOADS_DIR, image_dest))
-    return jsonify(
-        {
-            'file_name': image_dest,
-            'delete_it_from_server': True
-        }
-    )
+    return jsonify({"file_name": image_dest, "delete_it_from_server": True})
+
 
 # delete entire folder
 @app.route("/command/delete")
 def delete_dir():
     shutil.rmtree(os.path.join(UPLOADS_DIR)),
-    make_folder('uploads')
-    return jsonify(
-        {   
-            'status': "clearning uploads folder"
-        }
-    )
+    make_folder("uploads")
+    return jsonify({"status": "clearning uploads folder"})

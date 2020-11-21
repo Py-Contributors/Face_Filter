@@ -18,6 +18,3 @@ def make_folder(folder_name):
         os.mkdir(folder_name)
     except Exception:
         print("folder already exists")
-
-
-
