@@ -1,6 +1,7 @@
 import os
 import string
 import random
+from datetime import datetime
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOADS_DIR = os.path.join(BASE_DIR, "uploads")
@@ -11,6 +12,7 @@ title = "OpenCV Rest API with Flask for Face Detection and Face Filters"
 api_version = "0.0.1-alpha"
 base_url = "https://opencv-api.herokuapp.com"
 documentation_url = "documentation_url"
+current_time = datetime.utcnow()
 
 # create folder in root dir
 def make_folder(folder_name):

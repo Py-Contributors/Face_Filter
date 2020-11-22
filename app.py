@@ -2,7 +2,6 @@ import os
 import cv2
 import imghdr
 import shutil
-from datetime import datetime
 
 from PIL import Image
 from werkzeug.utils import secure_filename
@@ -11,7 +10,7 @@ from flask import Flask, request, jsonify, send_file
 from settings import make_folder
 from settings import UPLOADS_DIR, ASSETS_DIR
 from utils import faceFilter, faceDetectionDNN
-from settings import title, base_url, api_version, documentation_url
+from settings import title, base_url, api_version, documentation_url, current_time
 
 
 app = Flask(__name__)
@@ -57,7 +56,8 @@ def home():
             "email": "deepak008@live.com",
             "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
             "supported_image_type": "{Jpg, Png}",
-            "time": datetime.now(),
+            "time": current_time,
+            "total_image_on_server": len(os.listdir(UPLOADS_DIR))
         }
     )
 
@@ -98,7 +98,8 @@ def face_detection():
                     "file_name": filename,
                     "output_image_url": f"{base_url}/uploads/{filename}",
                     "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
-                    "time": datetime.now(),
+                    "time": current_time,                    
+                    "documentation": f"{documentation_url}",
                 }
             )
     return jsonify(
@@ -106,7 +107,7 @@ def face_detection():
             "title": title,
             "API Version": api_version,
             "status": "Create post request for face-detection",
-            "docs": f"{documentation_url}",
+            "documentation": f"{documentation_url}",
         }
     )
 
@@ -147,7 +148,8 @@ def face_filter():
                     "file_name": filename,
                     "output_image_url": f"{base_url}/uploads/{filename}",
                     "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
-                    "time": datetime.now(),
+                    "time": current_time,
+                    "documentation": f"{documentation_url}",
                 }
             )
     return jsonify(
@@ -155,29 +157,36 @@ def face_filter():
             "title": title,
             "API Version": api_version,
             "status": "Create post request for face-filters",
-            "docs": f"{documentation_url}",
+            "documentation": f"{documentation_url}",
         }
     )
 
 
 # methods for output_image_url
-@app.route("/uploads/<image_dest>")
+@app.route("/uploads/<image_dest>", methods=["GET"])
 def get_img(image_dest):
-    return send_file(f"uploads/{image_dest}")
+    return send_file(
+        f"uploads/{image_dest}"
+    )
 
 
 # delete one image only
-@app.route("/uploads/<image_dest>/delete")
+@app.route("/uploads/<image_dest>/delete", methods=["GET"])
 def delete_image(image_dest):
     try:
         os.remove(os.path.join(UPLOADS_DIR, image_dest))
     except:
         print("shutil error! while deleting the image")
-    return jsonify({"file_name": image_dest, "delete_it_from_server": True})
+    return jsonify(
+        {
+            "file_name": image_dest, 
+            "delete_it_from_server": True
+        }
+    )
 
 
 # delete entire folder
-@app.route("/command/delete")
+@app.route("/command/delete", methods=["GET"])
 def delete_dir():
     """ recreating uploads dir and copying smaple.jpg file again. 
     It's for pytest purpose in both dir.
@@ -191,4 +200,20 @@ def delete_dir():
         shutil.copy(os.path.join(ASSETS_DIR, "sample.jpg"), os.path.join(UPLOADS_DIR, "sample.jpg"))
     except:
         print("shutil error! copy error from assets to uploads.")
-    return jsonify({"status": "clearning uploads folder"})
+    return jsonify(
+        {
+            "status": "clearning uploads folder"
+        }
+    )
+
+# methods for show contents of entire uploads dir
+@app.route("/command/show", methods=["GET"])
+def show_dir():
+    total_image = len(os.listdir(UPLOADS_DIR))
+    image_name = os.listdir(UPLOADS_DIR)
+    return jsonify(
+        {
+            "total_image": total_image,
+            "image_name": image_name
+        }
+    )
