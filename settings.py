@@ -9,13 +9,13 @@ ASSETS_DIR = os.path.join(BASE_DIR, "assets")
 FILTERS_DIR = os.path.join(BASE_DIR, "filters")
 
 title = "OpenCV Rest API with Flask for Face Detection and Face Filters"
-api_version = "0.0.1-alpha"
+api_version = "0.0.2-alpha"
 base_url = "https://opencv-api.herokuapp.com"
 documentation_url = "documentation_url"
 current_time = datetime.utcnow()
 num_of_image_on_server = len(os.listdir(UPLOADS_DIR))
 
-# create folder in root dir
+# create directory in the root dir
 def create_directory(folder_name):
     if not os.path.isdir(folder_name):
         os.mkdir(folder_name)
@@ -25,13 +25,13 @@ def create_directory(folder_name):
 def recreate_uploads_dir():
     try:
         shutil.rmtree(os.path.join(UPLOADS_DIR)),
-    except Exception as e:
-        print(e)
+    except Exception:
+        print(Exception)
     create_directory("uploads")
     try:
         shutil.copy(
             os.path.join(ASSETS_DIR, "sample.jpg"),
-            os.path.join(UPLOADS_DIR, "sample.jpg"),
+            os.path.join(UPLOADS_DIR, "sample.jpg")
         )
-    except Exception as e:
-        print(e)
+    except Exception:
+        print(Exception)
