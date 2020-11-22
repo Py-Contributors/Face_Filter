@@ -1,6 +1,7 @@
 import os
 import string
 from datetime import datetime
+import shutil
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOADS_DIR = os.path.join(BASE_DIR, "uploads")
@@ -15,6 +16,18 @@ current_time = datetime.utcnow()
 num_of_image_on_server = len(os.listdir(UPLOADS_DIR))
 
 # create folder in root dir
-def make_folder(folder_name):
+def create_directory(folder_name):
     if not os.path.isdir(folder_name):
         os.mkdir(folder_name)
+
+# empty the uploads dir and recretae it
+def recreate_uploads_dir():
+    try:
+        shutil.rmtree(os.path.join(UPLOADS_DIR)),
+    except Exception as e:
+        print(e)
+    create_directory("uploads")
+    try:
+        shutil.copy(os.path.join(ASSETS_DIR, "sample.jpg"), os.path.join(UPLOADS_DIR, "sample.jpg"))
+    except Exception as e:
+        print(e)

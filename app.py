@@ -1,25 +1,22 @@
 import os
 import cv2
 import imghdr
-import shutil
 
 from PIL import Image
 from werkzeug.utils import secure_filename
 from flask import Flask, request, jsonify, send_file
 
-from settings import make_folder
-from settings import UPLOADS_DIR, ASSETS_DIR
+import settings
+from settings import UPLOADS_DIR, ASSETS_DIR, base_url
 from utils import faceFilter, faceDetectionDNN
-from settings import title, base_url, api_version, documentation_url, current_time, num_of_image_on_server
-
 
 app = Flask(__name__)
 
 # create folder for uploading image
-make_folder("uploads")
+settings.create_directory("uploads")
 
 # app configurations
-app.config["MAX_CONTENT_LENGTH"] = 1024 * 1024 * 50
+app.config["MAX_CONTENT_LENGTH"] = 1024 * 1024 * 5
 app.config["UPLOAD_EXTENSIONS"] = [".jpg", ".png", ".jpeg"]
 app.config["JSON_SORT_KEYS"] = False
 app.config["JSONIFY_PRETTYPRINT_REGULAR"] = True
@@ -40,15 +37,13 @@ def too_large(e):
 
 
 """ OpenCV FaceFilter RestAPI """
-
-
 @app.route("/", methods=["GET"])
 def home():
     return jsonify(
         {
-            "title": title,
-            "api_version": api_version,
-            "documentation": f"{documentation_url}",
+            "title": settings.title,
+            "api_version": settings.api_version,
+            "documentation": f"{settings.documentation_url}",
             "face_filter_url": f"{base_url}/facefilter",
             "face_detection_url": f"{base_url}/facedetection",
             "Author": "Deepak Raj",
@@ -56,8 +51,8 @@ def home():
             "email": "deepak008@live.com",
             "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
             "supported_image_type": "{Jpg, Png}",
-            "time": current_time,
-            "total_image_on_server": num_of_image_on_server
+            "time": settings.current_time,
+            "total_image_on_server": settings.num_of_image_on_server
         }
     )
 
@@ -67,8 +62,6 @@ Input post request:
     file: image_file
 output:
     detected face and number of face """
-
-
 @app.route("/facedetection", methods=["GET", "POST"])
 def face_detection():
     if request.method == "POST":
@@ -93,21 +86,21 @@ def face_detection():
 
             return jsonify(
                 {
-                    "title": title,
-                    "api_version": api_version,
+                    "title": settings.title,
+                    "api_version": settings.api_version,
                     "file_name": filename,
                     "output_image_url": f"{base_url}/uploads/{filename}",
                     "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
-                    "time": current_time,                    
-                    "documentation": f"{documentation_url}",
+                    "time": settings.current_time,                    
+                    "documentation": f"{settings.documentation_url}",
                 }
             )
     return jsonify(
         {
-            "title": title,
-            "API Version": api_version,
+            "title": settings.title,
+            "API Version": settings.api_version,
             "status": "Create post request for face-detection",
-            "documentation": f"{documentation_url}",
+            "documentation": f"{settings.documentation_url}",
         }
     )
 
@@ -116,8 +109,6 @@ def face_detection():
 input post:
     file: image_file
     mask: num:<1-3> """
-
-
 @app.route("/facefilter", methods=["GET", "POST"])
 def face_filter():
     if request.method == "POST":
@@ -143,13 +134,13 @@ def face_filter():
 
             return jsonify(
                 {
-                    "title": title,
-                    "api_version": api_version,
+                    "title": settings.title,
+                    "api_version": settings.api_version,
                     "file_name": filename,
                     "output_image_url": f"{base_url}/uploads/{filename}",
                     "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
-                    "time": current_time,
-                    "documentation": f"{documentation_url}",
+                    "time": settings.current_time,
+                    "documentation": f"{settings.documentation_url}",
                 }
             )
     return jsonify(
@@ -157,7 +148,7 @@ def face_filter():
             "title": title,
             "API Version": api_version,
             "status": "Create post request for face-filters",
-            "documentation": f"{documentation_url}",
+            "documentation": f"{settings.documentation_url}",
         }
     )
 
@@ -191,15 +182,7 @@ def delete_dir():
     """ recreating uploads dir and copying smaple.jpg file again. 
     It's for pytest purpose in both dir.
      """
-    try:
-        shutil.rmtree(os.path.join(UPLOADS_DIR)),
-    except:
-        print("shutil error! while deleting the uploads dir.")
-    make_folder("uploads")
-    try:
-        shutil.copy(os.path.join(ASSETS_DIR, "sample.jpg"), os.path.join(UPLOADS_DIR, "sample.jpg"))
-    except:
-        print("shutil error! copy error from assets to uploads. \n Or Image already present in upload folder")
+    settings.recreate_uploads_dir()
     return jsonify(
         {
             "status": "clearning uploads folder"
@@ -212,21 +195,12 @@ def show_dir():
     image_name = os.listdir(UPLOADS_DIR)
     return jsonify(
         {
-            "total_image": num_of_image_on_server,
+            "total_image": settings.num_of_image_on_server,
             "image_name": image_name
         }
     )
 
+
 # empty the uploads dir if total no. of image is more than 100.
-if num_of_image_on_server > 100:
-    make_folder("uploads")
-    try:
-        shutil.rmtree(os.path.join(UPLOADS_DIR)),
-        print("deleting dir")
-    except:
-        print("shutil error! while deleting the uploads dir.")
-    make_folder("uploads")
-    try:
-        shutil.copy(os.path.join(ASSETS_DIR, "sample.jpg"), os.path.join(UPLOADS_DIR, "sample.jpg"))
-    except:
-        print("shutil error! copy error from assets to uploads. \n Or Image already present in upload folder")
+if settings.num_of_image_on_server > 50:
+    settings.recreate_uploads_dir()
