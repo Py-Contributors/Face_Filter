@@ -11,7 +11,7 @@ FILTERS_DIR = os.path.join(BASE_DIR, "filters")
 title = "OpenCV Rest API with Flask for Face Detection and Face Filters"
 api_version = "0.0.2-alpha"
 base_url = "https://opencv-api.herokuapp.com"
-documentation_url = "documentation_url"
+documentation_url = "https://opencv-api.readthedocs.io/"
 current_time = datetime.utcnow()
 num_of_image_on_server = len(os.listdir(UPLOADS_DIR))
 
