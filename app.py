@@ -10,7 +10,7 @@ from flask import Flask, request, jsonify, send_file
 from settings import make_folder
 from settings import UPLOADS_DIR, ASSETS_DIR
 from utils import faceFilter, faceDetectionDNN
-from settings import title, base_url, api_version, documentation_url, current_time
+from settings import title, base_url, api_version, documentation_url, current_time, num_of_image_on_server
 
 
 app = Flask(__name__)
@@ -57,7 +57,7 @@ def home():
             "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
             "supported_image_type": "{Jpg, Png}",
             "time": current_time,
-            "total_image_on_server": len(os.listdir(UPLOADS_DIR))
+            "total_image_on_server": num_of_image_on_server
         }
     )
 
@@ -185,7 +185,7 @@ def delete_image(image_dest):
     )
 
 
-# delete entire folder
+# methods for empty the uploads dir
 @app.route("/command/delete", methods=["GET"])
 def delete_dir():
     """ recreating uploads dir and copying smaple.jpg file again. 
@@ -199,7 +199,7 @@ def delete_dir():
     try:
         shutil.copy(os.path.join(ASSETS_DIR, "sample.jpg"), os.path.join(UPLOADS_DIR, "sample.jpg"))
     except:
-        print("shutil error! copy error from assets to uploads.")
+        print("shutil error! copy error from assets to uploads. \n Or Image already present in upload folder")
     return jsonify(
         {
             "status": "clearning uploads folder"
@@ -209,11 +209,24 @@ def delete_dir():
 # methods for show contents of entire uploads dir
 @app.route("/command/show", methods=["GET"])
 def show_dir():
-    total_image = len(os.listdir(UPLOADS_DIR))
     image_name = os.listdir(UPLOADS_DIR)
     return jsonify(
         {
-            "total_image": total_image,
+            "total_image": num_of_image_on_server,
             "image_name": image_name
         }
     )
+
+# empty the uploads dir if total no. of image is more than 100.
+if num_of_image_on_server > 100:
+    make_folder("uploads")
+    try:
+        shutil.rmtree(os.path.join(UPLOADS_DIR)),
+        print("deleting dir")
+    except:
+        print("shutil error! while deleting the uploads dir.")
+    make_folder("uploads")
+    try:
+        shutil.copy(os.path.join(ASSETS_DIR, "sample.jpg"), os.path.join(UPLOADS_DIR, "sample.jpg"))
+    except:
+        print("shutil error! copy error from assets to uploads. \n Or Image already present in upload folder")

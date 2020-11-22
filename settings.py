@@ -1,6 +1,5 @@
 import os
 import string
-import random
 from datetime import datetime
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -13,6 +12,7 @@ api_version = "0.0.1-alpha"
 base_url = "https://opencv-api.herokuapp.com"
 documentation_url = "documentation_url"
 current_time = datetime.utcnow()
+num_of_image_on_server = len(os.listdir(UPLOADS_DIR))
 
 # create folder in root dir
 def make_folder(folder_name):
