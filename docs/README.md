@@ -19,8 +19,9 @@ Currently it's has two endpoints.
 
 Below is the postman screenshot for API use case.
 
-<img src="" alt="facefilter">
-<img src="" alt="facefilter">
+![facefilter](https://dev-to-uploads.s3.amazonaws.com/i/v6kmmjmzzyn9ymk7zfbo.png)
+
+![face detection](https://dev-to-uploads.s3.amazonaws.com/i/ptj52lntb3s3qqjf9197.png)
 
 ## Documentation
 
@@ -55,8 +56,8 @@ email your suggestions here: codeperfectplus@gmail.com
 
 ## Author
 
-Author : CodePerfectPlus
-Language : Python
-API: https://opencv-api.herokuapp.com/
-Github : https://github.com/codePerfectPlus
-Website : http://codeperfectplus.github.io/
+- Author : CodePerfectPlus
+- Language : Python
+- API: https://opencv-api.herokuapp.com/
+- Github : https://github.com/codePerfectPlus
+- Website : http://codeperfectplus.github.io/
