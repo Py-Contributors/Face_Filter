@@ -19,8 +19,8 @@ Currently it's has two endpoints.
 
 Below is the postman screenshot for API use case.
 
-<img src="./assets/facefilter.png" alt="facefilter">
-<img src="./assets/facedetection.png" alt="facefilter">
+<img src="" alt="facefilter">
+<img src="" alt="facefilter">
 
 ## Documentation
 
