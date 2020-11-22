@@ -1,3 +1,4 @@
+""" face detection version 2 DNN """
 import os
 import numpy as np
 import cv2
@@ -11,7 +12,7 @@ confThresh = 0.8
 net = cv2.dnn.readNetFromCaffe(proto, model)
 
 
-def faceDetectionDNN(imgPath):
+def faceDetectionv2(imgPath):
     img = cv2.imread(imgPath)
 
     (h, w) = img.shape[:2]
@@ -29,6 +30,6 @@ def faceDetectionDNN(imgPath):
         box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
         (startX, startY, endX, endY) = box.astype("int")
         y = startY - 10 if startY - 10 > 10 else startY + 10
-        cv2.rectangle(img, (startX, startY), (endX, endY), (0, 0, 255), 2)
+        cv2.rectangle(img, (startX, startY), (endX, endY), (0, 255, 0), 2)
 
     return img

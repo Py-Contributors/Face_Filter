@@ -29,7 +29,7 @@ def apply_mask(face: np.array, mask: np.array):
     return face_with_mask
 
 
-def faceFilter(input_image, mask_num):
+def faceFilterv1(input_image, mask_num):
 
     input_image = cv2.imread(input_image)
 

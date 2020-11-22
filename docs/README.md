@@ -14,6 +14,7 @@ API_URL:- <https://opencv-api.herokuapp.com/>
 ## How to Use
 
 Currently it's has two endpoints. 
+
 - [face detection](https://opencv-api.herokuapp.com/api/v1/facedetection)
 - [face filter](https://opencv-api.herokuapp.com/api/v1/facefilter)
 

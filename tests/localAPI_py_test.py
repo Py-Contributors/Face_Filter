@@ -11,7 +11,7 @@ def test_app():
     assert response.status_code == 200
     assert type(response.data) == bytes
 
-    # post request test for face detection
+    # Face Detection version 1
     file_path = os.path.join(ASSETS_DIR, "sample.jpg")
 
     data = {"file": open(file_path, "rb")}
@@ -22,7 +22,18 @@ def test_app():
     assert response.status_code == 200
     assert type(response.data) == bytes
 
-    # post request test for face filters
+    # Face Detection version 2
+    file_path = os.path.join(ASSETS_DIR, "sample.jpg")
+
+    data = {"file": open(file_path, "rb")}
+
+    response = app.test_client().post(
+        "api/v2/facedetection", data=data, content_type="multipart/form-data"
+    )
+    assert response.status_code == 200
+    assert type(response.data) == bytes
+
+    # Face Filter Version 1
     file_path = os.path.join(ASSETS_DIR, "sample2.jpg")
 
     data = {"mask": 1}

@@ -7,8 +7,10 @@ from werkzeug.utils import secure_filename
 from flask import Flask, request, jsonify, send_file
 
 import settings
-from settings import UPLOADS_DIR, ASSETS_DIR, base_url_v1
-from utils import faceFilter, faceDetectionDNN
+from settings import UPLOADS_DIR, ASSETS_DIR
+from settings import base_url, base_url_v1, base_url_v2
+from utils import faceFilterv1, faceDetectionv1
+from utils import faceDetectionv2
 
 app = Flask(__name__)
 
@@ -37,7 +39,7 @@ def too_large(e):
     return "File is too large", 413
 
 
-""" OpenCV FaceFilter RestAPI """
+""" OpenCV FaceFilter RestAPI"""
 @app.route("/", methods=["GET"])
 def home():
     return jsonify(
@@ -45,8 +47,9 @@ def home():
             "title": settings.title,
             "api_version": settings.api_version,
             "documentation": f"{settings.documentation_url}",
-            "face_filter_url": f"{base_url_v1}/facefilter",
-            "face_detection_url": f"{base_url_v1}/facedetection",
+            "face_filter_v1": f"{base_url_v1}/facefilter",
+            "face_detection_v1": f"{base_url_v1}/facedetection",
+            "face_detection_v2": f"{base_url_v2}/facedetection",
             "Author": "Deepak Raj",
             "github": "https://github.com/codeperfectplus",
             "email": "deepak008@live.com",
@@ -58,11 +61,7 @@ def home():
     )
 
 
-""" Face Detection Post Request
-Input post request:
-    file: image_file
-output:
-    detected face and number of face """
+""" Face Detection V1 """
 @app.route("/api/v1/facedetection", methods=["GET", "POST"])
 def face_detection_v1():
     if request.method == "POST":
@@ -79,9 +78,9 @@ def face_detection_v1():
 
             upload_file.save(image_path)
 
-            preprocess_img = faceDetectionDNN(image_path)
+            preprocess_img, _ = faceDetectionv1(image_path)
             # change BGR image RGb
-            preprocess_img = cv2.cvtColor(preprocess_img, cv2.COLOR_BGR2RGB)
+            preprocess_img= cv2.cvtColor(preprocess_img, cv2.COLOR_BGR2RGB)
             output_image = Image.fromarray(preprocess_img, "RGB")
             output_image.save(image_path)
 
@@ -90,7 +89,7 @@ def face_detection_v1():
                     "title": settings.title,
                     "api_version": settings.api_version,
                     "file_name": filename,
-                    "output_image_url": f"{base_url_v1}/uploads/{filename}",
+                    "output_image_url": f"{base_url}/uploads/{filename}",
                     "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
                     "time": settings.current_time,                    
                     "documentation": f"{settings.documentation_url}",
@@ -106,10 +105,7 @@ def face_detection_v1():
     )
 
 
-""" Face Filter post request.
-input post:
-    file: image_file
-    mask: num:<1-3> """
+''' Face filter V1 '''
 @app.route("/api/v1/facefilter", methods=["GET", "POST"])
 def face_filter_v1():
     if request.method == "POST":
@@ -128,7 +124,7 @@ def face_filter_v1():
 
             upload_file.save(image_path)
 
-            preprocess_image = faceFilter(image_path, mask_num)
+            preprocess_image = faceFilterv1(image_path, mask_num)
             preprocess_image = cv2.cvtColor(preprocess_image, cv2.COLOR_BGR2RGB)
             output_image = Image.fromarray(preprocess_image, "RGB")
             output_image.save(image_path)
@@ -138,7 +134,7 @@ def face_filter_v1():
                     "title": settings.title,
                     "api_version": settings.api_version,
                     "file_name": filename,
-                    "output_image_url": f"{base_url_v1}/uploads/{filename}",
+                    "output_image_url": f"{base_url}/uploads/{filename}",
                     "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
                     "time": settings.current_time,
                     "documentation": f"{settings.documentation_url}",
@@ -154,7 +150,56 @@ def face_filter_v1():
     )
 
 
-# methods for output_image_url
+''' Face Detection version 2 '''
+@app.route("/api/v2/facedetection", methods=["GET", "POST"])
+def face_detection_v2():
+    if request.method == "POST":
+        upload_file = request.files["file"]
+        filename = secure_filename(upload_file.filename)
+        if filename != "":
+            file_ext = os.path.splitext(filename)[1]
+            if file_ext not in app.config[
+                "UPLOAD_EXTENSIONS"
+            ] or file_ext != validate_image(upload_file.stream):
+                return "Invalid Image", 400
+
+            image_path = "/".join([UPLOADS_DIR, filename])
+
+            upload_file.save(image_path)
+
+            preprocess_img = faceDetectionv2(image_path)
+            # change BGR image RGb
+            preprocess_img= cv2.cvtColor(preprocess_img, cv2.COLOR_BGR2RGB)
+            output_image = Image.fromarray(preprocess_img, "RGB")
+            output_image.save(image_path)
+
+            return jsonify(
+                {
+                    "title": settings.title,
+                    "api_version": settings.api_version,
+                    "file_name": filename,
+                    "output_image_url": f"{base_url}/uploads/{filename}",
+                    "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
+                    "time": settings.current_time,                    
+                    "documentation": f"{settings.documentation_url}",
+                }
+            )
+    return jsonify(
+        {
+            "title": settings.title,
+            "API Version": settings.api_version,
+            "status": "Create post request for face-detection",
+            "documentation": f"{settings.documentation_url}",
+        }
+    )
+
+
+''' Face filter V2 '''
+@app.route("/api/v2/facefilter", methods=["GET", "POST"])
+def face_filter_v2():
+    pass
+
+''' show uploads image '''
 @app.route("/uploads/<image_dest>", methods=["GET"])
 def get_img(image_dest):
     return send_file(
@@ -162,7 +207,7 @@ def get_img(image_dest):
     )
 
 
-# delete one image only
+''' DELETE image from serer  '''
 @app.route("/uploads/<image_dest>/delete", methods=["GET"])
 def delete_image(image_dest):
     try:
@@ -177,7 +222,7 @@ def delete_image(image_dest):
     )
 
 
-# methods for empty the uploads dir
+''' Recreate the Entire uploads dir '''
 @app.route("/command/delete", methods=["GET"])
 def delete_dir():
     """ recreating uploads dir and copying smaple.jpg file again. 
@@ -190,7 +235,7 @@ def delete_dir():
         }
     )
 
-# methods for show contents of entire uploads dir
+''' Show content of uploads dir '''
 @app.route("/command/show", methods=["GET"])
 def show_dir():
     image_name = os.listdir(UPLOADS_DIR)
@@ -201,6 +246,6 @@ def show_dir():
         }
     )
 
-# empty the uploads dir if total no. of image is more than 100.
+''' empty the uploads dir if total no. of image is more than 100. '''
 if settings.num_of_image_on_server > 50:
     settings.recreate_uploads_dir()

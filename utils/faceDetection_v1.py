@@ -1,3 +1,4 @@
+''' Face Detection version-1 using haarcascade '''
 import os
 import cv2
 from settings import BASE_DIR, ASSETS_DIR
@@ -12,7 +13,7 @@ eye_cascade = cv2.CascadeClassifier(eye_path)
 smile_cascade = cv2.CascadeClassifier(smile_path)
 
 
-def faceDetection(img):
+def faceDetectionv1(img):
     img = cv2.imread(img)
 
     gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)

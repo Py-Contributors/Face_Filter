@@ -14,6 +14,7 @@ API_URL:- <https://opencv-api.herokuapp.com/>
 ## How to Use
 
 Currently it's has two endpoints. 
+
 - [face detection](https://opencv-api.herokuapp.com/api/v1/facedetection)
 - [face filter](https://opencv-api.herokuapp.com/api/v1/facefilter)
 
@@ -36,6 +37,7 @@ Face-Filter URL:- <https://opencv-api.herokuapp.com/api/v1/facefilter>
 ### Face-Detection
 
 Face detection api is a simple api for face detection.
+
 Face-Detection URL:- <https://opencv-api.herokuapp.com/api/v1/facedetection>
 
 ## Report a Bug

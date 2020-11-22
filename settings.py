@@ -8,20 +8,23 @@ UPLOADS_DIR = os.path.join(BASE_DIR, "uploads")
 ASSETS_DIR = os.path.join(BASE_DIR, "assets")
 FILTERS_DIR = os.path.join(BASE_DIR, "filters")
 
+''' Json data '''
 title = "OpenCV Rest API with Flask for Face Detection and Face Filters"
 api_version = "0.0.2-alpha"
+base_url = "https://opencv-api.herokuapp.com/"
 base_url_v1 = "https://opencv-api.herokuapp.com/api/v1"
+base_url_v2 = "https://opencv-api.herokuapp.com/api/v2"
 documentation_url = "https://opencv-api.readthedocs.io/"
 current_time = datetime.utcnow()
 num_of_image_on_server = len(os.listdir(UPLOADS_DIR))
 
-# create directory in the root dir
+''' Create new directory '''
 def create_directory(folder_name):
     if not os.path.isdir(folder_name):
         os.mkdir(folder_name)
 
 
-# empty the uploads dir and recretae it
+''' Recreate the entire uploads directory '''
 def recreate_uploads_dir():
     try:
         shutil.rmtree(os.path.join(UPLOADS_DIR)),

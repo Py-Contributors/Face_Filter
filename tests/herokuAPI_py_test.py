@@ -11,7 +11,7 @@ def test_app():
     assert response.status_code == 200
     assert type(response.json()) == dict
 
-    # post request test for face detection
+    # Face Detection version 1
     file_path = os.path.join(ASSETS_DIR, "sample.jpg")
 
     files = {"file": open(file_path, "rb")}
@@ -22,7 +22,7 @@ def test_app():
     assert response.status_code == 200
     assert type(response.json()) == dict
 
-    # post request test for face filters
+    # Face Filter version 1
     file_path = os.path.join(ASSETS_DIR, "sample2.jpg")
 
     files = {
