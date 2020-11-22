@@ -12,10 +12,13 @@ def test_app():
     assert type(response.data) == bytes
 
     # Face Detection version 1
+    response = app.test_client().get("api/v1/facedetection")
+
+    assert response.status_code == 200
+    assert type(response.data) == bytes
+
     file_path = os.path.join(ASSETS_DIR, "sample.jpg")
-
     data = {"file": open(file_path, "rb")}
-
     response = app.test_client().post(
         "api/v1/facedetection", data=data, content_type="multipart/form-data"
     )
@@ -23,6 +26,11 @@ def test_app():
     assert type(response.data) == bytes
 
     # Face Detection version 2
+    response = app.test_client().get('api/v2/facedetection')
+
+    assert response.status_code == 200
+    assert type(response.data) == bytes
+
     file_path = os.path.join(ASSETS_DIR, "sample.jpg")
 
     data = {"file": open(file_path, "rb")}
@@ -34,6 +42,11 @@ def test_app():
     assert type(response.data) == bytes
 
     # Face Filter Version 1
+    response = app.test_client().get("api/v1/facefilter")
+
+    assert response.status_code == 200
+    assert type(response.data) == bytes
+
     file_path = os.path.join(ASSETS_DIR, "sample2.jpg")
 
     data = {"mask": 1}
@@ -47,6 +60,12 @@ def test_app():
 
     # get request test for access files
     response = app.test_client().get("/uploads/sample.jpg")
+
+    assert response.status_code == 200
+    assert type(response.data) == bytes
+
+    # test for show command
+    response = app.test_client().get("/command/show")
 
     assert response.status_code == 200
     assert type(response.data) == bytes

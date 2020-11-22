@@ -97,7 +97,7 @@ def face_detection_v1():
             )
     return jsonify(
         {
-            "title": settings.title,
+            "title": "Face Detection Version 1",
             "API Version": settings.api_version,
             "status": "Create post request for face-detection",
             "documentation": f"{settings.documentation_url}",
@@ -142,7 +142,7 @@ def face_filter_v1():
             )
     return jsonify(
         {
-            "title": settings.title,
+            "title": "Face Filter Version 1",
             "API Version": settings.api_version,
             "status": "Create post request for face-filters",
             "documentation": f"{settings.documentation_url}",
@@ -186,7 +186,7 @@ def face_detection_v2():
             )
     return jsonify(
         {
-            "title": settings.title,
+            "title": "Face Detection Version 2",
             "API Version": settings.api_version,
             "status": "Create post request for face-detection",
             "documentation": f"{settings.documentation_url}",
