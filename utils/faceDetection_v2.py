@@ -1,4 +1,13 @@
-""" face detection version 2 DNN """
+'''
+Face Detection V2
+
+Classifier Type :
+    deploy.prototxt.txt
+    res10_300x300_ssd_iter_140000
+
+Output :
+    Image with rectangle mark on face
+'''
 import os
 import numpy as np
 import cv2

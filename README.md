@@ -13,10 +13,11 @@ API_URL:- <https://opencv-api.herokuapp.com/>
 
 ## How to Use
 
-Currently it's has two endpoints. 
+Currently it's has three endpoints.
 
-- [face detection](https://opencv-api.herokuapp.com/api/v1/facedetection)
+- [face detection v1](https://opencv-api.herokuapp.com/api/v1/facedetection)
 - [face filter](https://opencv-api.herokuapp.com/api/v1/facefilter)
+- [face detection v2](https://opencv-api.herokuapp.com/api/v2/facedetection)
 
 Below is the postman screenshot for API use case.
 
@@ -58,8 +59,8 @@ email your suggestions here: codeperfectplus@gmail.com
 
 ## Author
 
-- Author : CodePerfectPlus
-- Language : Python
-- API: https://opencv-api.herokuapp.com/
-- Github : https://github.com/codePerfectPlus
-- Website : http://codeperfectplus.github.io/
+- Author: CodePerfectPlus
+- Language: Python
+- API: <https://opencv-api.herokuapp.com/>
+- Github: <https://github.com/codePerfectPlus>
+- Website: <http://codeperfectplus.github.io/>

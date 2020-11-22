@@ -69,3 +69,9 @@ def test_app():
 
     assert response.status_code == 200
     assert type(response.data) == bytes
+
+    # test for delete command
+    response = app.test_client().get("/command/delete")
+
+    assert response.status_code == 200
+    assert type(response.data) == bytes

@@ -33,7 +33,7 @@ def validate_image(stream):
         return None
     return "." + (format if format != "jpeg" else "jpg")
 
-
+# error handing for MAX_CONTENT_LENGTH
 @app.errorhandler(413)
 def too_large(e):
     return "File is too large", 413
@@ -91,7 +91,7 @@ def face_detection_v1():
                     "file_name": filename,
                     "output_image_url": f"{base_url}/uploads/{filename}",
                     "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
-                    "time": settings.current_time,                    
+                    "time": settings.current_time,
                     "documentation": f"{settings.documentation_url}",
                 }
             )
@@ -180,7 +180,7 @@ def face_detection_v2():
                     "file_name": filename,
                     "output_image_url": f"{base_url}/uploads/{filename}",
                     "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
-                    "time": settings.current_time,                    
+                    "time": settings.current_time,
                     "documentation": f"{settings.documentation_url}",
                 }
             )
@@ -207,7 +207,7 @@ def get_img(image_dest):
     )
 
 
-''' DELETE image from serer  '''
+''' Delete image from serer  '''
 @app.route("/uploads/<image_dest>/delete", methods=["GET"])
 def delete_image(image_dest):
     try:
@@ -216,7 +216,7 @@ def delete_image(image_dest):
         print("shutil error! while deleting the image")
     return jsonify(
         {
-            "file_name": image_dest, 
+            "file_name": image_dest,
             "delete_it_from_server": True
         }
     )
@@ -225,7 +225,7 @@ def delete_image(image_dest):
 ''' Recreate the Entire uploads dir '''
 @app.route("/command/delete", methods=["GET"])
 def delete_dir():
-    """ recreating uploads dir and copying smaple.jpg file again. 
+    """ recreating uploads dir and copying smaple.jpg file again.
     It's for pytest purpose in both dir.
      """
     settings.recreate_uploads_dir()
@@ -246,6 +246,6 @@ def show_dir():
         }
     )
 
-''' empty the uploads dir if total no. of image is more than 100. '''
+''' empty the uploads dir if total no. of image is more than 50. '''
 if settings.num_of_image_on_server > 50:
     settings.recreate_uploads_dir()

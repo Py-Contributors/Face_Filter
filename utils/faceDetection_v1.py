@@ -1,4 +1,15 @@
-''' Face Detection version-1 using haarcascade '''
+'''
+Face Detection V1
+
+Classifier Type :
+    HarrCascade Frontal Face Classifier
+    Haarcascade Eyes Classifier
+    Haarcascade Smile Classifier
+
+Output :
+    Image with rectangle mark on face
+    Total number of detected face
+'''
 import os
 import cv2
 from settings import BASE_DIR, ASSETS_DIR
