@@ -6,7 +6,7 @@
 ## Introduction
 
 It's a Rest API for face-filter & face-detection using OpenCV, flask.
-Currently, It's using simple haar cascade and deep neural network for face detection and applying mask by resizing on the face.
+Currently, It's using `haar-cascade` and `deep-neural-network` for face detection and applying mask by resizing on the face.
 It can be integrated into the web app or Android/IOS mobile APP.
 
 API_URL:- <https://opencv-api.herokuapp.com/>
@@ -14,8 +14,8 @@ API_URL:- <https://opencv-api.herokuapp.com/>
 ## How to Use
 
 Currently it's has two endpoints. 
-- face detection
-- face filter
+- [face detection](https://opencv-api.herokuapp.com/api/v1/facedetection)
+- [face filter](https://opencv-api.herokuapp.com/api/v1/facefilter)
 
 Below is the postman screenshot for API use case.
 
@@ -30,12 +30,12 @@ OpecvAPI documentation:- <https://opencv-api.readthedocs.io/>
 
 Face Filter is a simple api for applying snapchat like filters on face.
 
-Face-Filter URL:- <https://opencv-api.herokuapp.com/facefilter>
+Face-Filter URL:- <https://opencv-api.herokuapp.com/api/v1/facefilter>
 
 ### Face-Detection
 
 Face detection api is a simple api for face detection.
-Face-Detection URL:- <https://opencv-api.herokuapp.com/facedetection>
+Face-Detection URL:- <https://opencv-api.herokuapp.com/api/v1/facedetection>
 
 ## Report a Bug
 
@@ -47,15 +47,16 @@ email your suggestions here: codeperfectplus@gmail.com
 
 ## Project RoadMap
 
-- Improve accuracy for face detection.
-- Improve accuracy for face mask
-- adding more mask
-- api version 2 for more complex filters.
-- color effect api for image.
+- Improve accuracy for Face-Detection
+- Improve accuracy for Face-Filter
+- Adding more Filters
+- API/V2 for advanced filters
+- Color Effect Filters for Image
 
 ## Author
 
 Author : CodePerfectPlus
 Language : Python
+API: https://opencv-api.herokuapp.com/
 Github : https://github.com/codePerfectPlus
 Website : http://codeperfectplus.github.io/

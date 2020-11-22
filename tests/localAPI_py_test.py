@@ -17,7 +17,7 @@ def test_app():
     data = {"file": open(file_path, "rb")}
 
     response = app.test_client().post(
-        "/facedetection", data=data, content_type="multipart/form-data"
+        "api/v1/facedetection", data=data, content_type="multipart/form-data"
     )
     assert response.status_code == 200
     assert type(response.data) == bytes
@@ -29,7 +29,7 @@ def test_app():
     data["file"] = open(file_path, "rb")
 
     response = app.test_client().post(
-        "/facefilter", data=data, content_type="multipart/form-data"
+        "/api/v1/facefilter", data=data, content_type="multipart/form-data"
     )
     assert response.status_code == 200
     assert type(response.data) == bytes

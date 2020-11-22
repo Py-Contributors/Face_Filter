@@ -7,7 +7,7 @@ from werkzeug.utils import secure_filename
 from flask import Flask, request, jsonify, send_file
 
 import settings
-from settings import UPLOADS_DIR, ASSETS_DIR, base_url
+from settings import UPLOADS_DIR, ASSETS_DIR, base_url_v1
 from utils import faceFilter, faceDetectionDNN
 
 app = Flask(__name__)
@@ -16,6 +16,7 @@ app = Flask(__name__)
 settings.create_directory("uploads")
 
 # app configurations
+app.config["DEBUG"] = False
 app.config["MAX_CONTENT_LENGTH"] = 1024 * 1024 * 5
 app.config["UPLOAD_EXTENSIONS"] = [".jpg", ".png", ".jpeg"]
 app.config["JSON_SORT_KEYS"] = False
@@ -44,8 +45,8 @@ def home():
             "title": settings.title,
             "api_version": settings.api_version,
             "documentation": f"{settings.documentation_url}",
-            "face_filter_url": f"{base_url}/facefilter",
-            "face_detection_url": f"{base_url}/facedetection",
+            "face_filter_url": f"{base_url_v1}/facefilter",
+            "face_detection_url": f"{base_url_v1}/facedetection",
             "Author": "Deepak Raj",
             "github": "https://github.com/codeperfectplus",
             "email": "deepak008@live.com",
@@ -62,8 +63,8 @@ Input post request:
     file: image_file
 output:
     detected face and number of face """
-@app.route("/facedetection", methods=["GET", "POST"])
-def face_detection():
+@app.route("/api/v1/facedetection", methods=["GET", "POST"])
+def face_detection_v1():
     if request.method == "POST":
         upload_file = request.files["file"]
         filename = secure_filename(upload_file.filename)
@@ -89,7 +90,7 @@ def face_detection():
                     "title": settings.title,
                     "api_version": settings.api_version,
                     "file_name": filename,
-                    "output_image_url": f"{base_url}/uploads/{filename}",
+                    "output_image_url": f"{base_url_v1}/uploads/{filename}",
                     "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
                     "time": settings.current_time,                    
                     "documentation": f"{settings.documentation_url}",
@@ -109,8 +110,8 @@ def face_detection():
 input post:
     file: image_file
     mask: num:<1-3> """
-@app.route("/facefilter", methods=["GET", "POST"])
-def face_filter():
+@app.route("/api/v1/facefilter", methods=["GET", "POST"])
+def face_filter_v1():
     if request.method == "POST":
         upload_file = request.files["file"]
         mask_num = request.form["mask"]
@@ -137,7 +138,7 @@ def face_filter():
                     "title": settings.title,
                     "api_version": settings.api_version,
                     "file_name": filename,
-                    "output_image_url": f"{base_url}/uploads/{filename}",
+                    "output_image_url": f"{base_url_v1}/uploads/{filename}",
                     "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
                     "time": settings.current_time,
                     "documentation": f"{settings.documentation_url}",
@@ -145,8 +146,8 @@ def face_filter():
             )
     return jsonify(
         {
-            "title": title,
-            "API Version": api_version,
+            "title": settings.title,
+            "API Version": settings.api_version,
             "status": "Create post request for face-filters",
             "documentation": f"{settings.documentation_url}",
         }
