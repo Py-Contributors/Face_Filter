@@ -200,7 +200,6 @@ def show_dir():
         }
     )
 
-
 # empty the uploads dir if total no. of image is more than 100.
 if settings.num_of_image_on_server > 50:
     settings.recreate_uploads_dir()

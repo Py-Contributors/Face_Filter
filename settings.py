@@ -20,6 +20,7 @@ def create_directory(folder_name):
     if not os.path.isdir(folder_name):
         os.mkdir(folder_name)
 
+
 # empty the uploads dir and recretae it
 def recreate_uploads_dir():
     try:
@@ -28,6 +29,9 @@ def recreate_uploads_dir():
         print(e)
     create_directory("uploads")
     try:
-        shutil.copy(os.path.join(ASSETS_DIR, "sample.jpg"), os.path.join(UPLOADS_DIR, "sample.jpg"))
+        shutil.copy(
+            os.path.join(ASSETS_DIR, "sample.jpg"),
+            os.path.join(UPLOADS_DIR, "sample.jpg"),
+        )
     except Exception as e:
         print(e)

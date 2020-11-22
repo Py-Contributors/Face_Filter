@@ -17,7 +17,8 @@ def test_app():
     files = {"file": open(file_path, "rb")}
 
     response = requests.post(
-        "http://opencv-api.herokuapp.com/facedetection", files=files)
+        "http://opencv-api.herokuapp.com/facedetection", files=files
+    )
     assert response.status_code == 200
     assert type(response.json()) == dict
 
@@ -28,7 +29,9 @@ def test_app():
         "file": open(file_path, "rb"),
     }
     data = {"mask": 1}
-    response = requests.post("http://opencv-api.herokuapp.com/facefilter", files=files, data=data)
+    response = requests.post(
+        "http://opencv-api.herokuapp.com/facefilter", files=files, data=data
+    )
 
     assert response.status_code == 200
     assert type(response.json()) == dict
