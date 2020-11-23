@@ -1,4 +1,4 @@
-'''
+"""
 Face Detection V2
 
 Classifier Type :
@@ -7,7 +7,7 @@ Classifier Type :
 
 Output :
     Image with rectangle mark on face
-'''
+"""
 import os
 import numpy as np
 import cv2

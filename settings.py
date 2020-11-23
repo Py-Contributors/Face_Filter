@@ -1,40 +1,44 @@
+"""
+extra settings for flask api configurations
+"""
+
 import os
-import string
-from datetime import datetime
 import shutil
+from pathlib import Path
+from datetime import datetime
+from os.path import isdir, join as joinpath
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-UPLOADS_DIR = os.path.join(BASE_DIR, "uploads")
-ASSETS_DIR = os.path.join(BASE_DIR, "assets")
-FILTERS_DIR = os.path.join(BASE_DIR, "filters")
+BASE_DIR = Path(__file__).resolve().parent
 
-''' Json data '''
+UPLOADS_DIR = joinpath(BASE_DIR, "uploads")
+ASSETS_DIR = joinpath(BASE_DIR, "assets")
+FILTERS_DIR = joinpath(BASE_DIR, "filters")
+
+""" Json data """
 title = "OpenCV Rest API with Flask for Face Detection and Face Filters"
 api_version = "0.0.2-alpha"
-base_url = "https://opencv-api.herokuapp.com/"
-base_url_v1 = "https://opencv-api.herokuapp.com/api/v1"
-base_url_v2 = "https://opencv-api.herokuapp.com/api/v2"
+base_url = "https://opencv-api.herokuapp.com"
 documentation_url = "https://opencv-api.readthedocs.io/"
 current_time = datetime.utcnow()
 num_of_image_on_server = len(os.listdir(UPLOADS_DIR))
 
-''' Create new directory '''
+
 def create_directory(folder_name):
-    if not os.path.isdir(folder_name):
+    """ Create new directory """
+    if not isdir(folder_name):
         os.mkdir(folder_name)
 
 
-''' Recreate the entire uploads directory '''
 def recreate_uploads_dir():
+    """ Recreate the entire uploads directory """
     try:
-        shutil.rmtree(os.path.join(UPLOADS_DIR)),
-    except Exception:
-        print(Exception)
+        shutil.rmtree(joinpath(UPLOADS_DIR)),
+    except Exception as error:
+        print(error)
     create_directory("uploads")
     try:
         shutil.copy(
-            os.path.join(ASSETS_DIR, "sample.jpg"),
-            os.path.join(UPLOADS_DIR, "sample.jpg")
+            joinpath(ASSETS_DIR, "sample.jpg"), joinpath(UPLOADS_DIR, "sample.jpg")
         )
-    except Exception:
-        print(Exception)
+    except Exception as error:
+        print(error)

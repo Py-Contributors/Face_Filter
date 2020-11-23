@@ -1,4 +1,4 @@
-'''
+"""
 Face Detection V1
 
 Classifier Type :
@@ -9,10 +9,10 @@ Classifier Type :
 Output :
     Image with rectangle mark on face
     Total number of detected face
-'''
+"""
 import os
 import cv2
-from settings import BASE_DIR, ASSETS_DIR
+from settings import ASSETS_DIR
 
 
 face_path = os.path.join(ASSETS_DIR, "haarcascade_frontalface_default.xml")

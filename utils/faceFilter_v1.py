@@ -1,4 +1,4 @@
-'''
+"""
 Face Filter V1
 
 Classifier Type :
@@ -6,7 +6,7 @@ Classifier Type :
 
 Output :
     Applied mask on face
-'''
+"""
 import os
 import numpy as np
 import cv2

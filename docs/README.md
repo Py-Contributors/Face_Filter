@@ -59,8 +59,9 @@ email your suggestions here: codeperfectplus@gmail.com
 
 ## Author
 
-- Author : CodePerfectPlus
-- Language : Python
-- API: https://opencv-api.herokuapp.com/
-- Github : https://github.com/codePerfectPlus
-- Website : http://codeperfectplus.github.io/
+- Author: CodePerfectPlus
+- Language: Python
+- API: <https://opencv-api.herokuapp.com/>
+- Github: <https://github.com/codePerfectPlus>
+- Website: <http://codeperfectplus.github.io/>
+u
