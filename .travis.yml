@@ -1,0 +1,9 @@
+os:
+  - linux
+
+dist: xenial
+
+language: python
+
+script:
+  - python -m pytest -v
