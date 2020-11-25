@@ -12,6 +12,9 @@ from utils import faceDetectionv1, faceDetectionv2, faceFilterv1
 
 app = FastAPI()
 
+#create uploads directory
+settings.create_directory('uploads')
+
 @app.get("/")
 async def home():
     """ OpenCV FaceFilter RestAPI"""
