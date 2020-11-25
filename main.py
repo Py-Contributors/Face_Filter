@@ -13,7 +13,7 @@ from utils import faceDetectionv1, faceDetectionv2, faceFilterv1
 app = FastAPI()
 
 @app.get("/")
-def home():
+async def home():
     """ OpenCV FaceFilter RestAPI"""
     return (
         {
@@ -136,11 +136,11 @@ async def face_filter_version_1(image: UploadFile = File(...), mask_num: int=For
             }
 
 @app.get('/uploads/{image_dest}')
-def get_img(image_dest):
+async def get_img_from_server(image_dest):
     return FileResponse(f"uploads/{image_dest}")
 
 @app.get("/uploads/{image_dest}/delete")
-def delete_image(image_dest):
+async def delete_image_from_server(image_dest):
     """ Delete image from serer  """
     try:
         os.remove(joinpath(UPLOADS_DIR, image_dest))
@@ -150,7 +150,7 @@ def delete_image(image_dest):
 
 
 @app.get("/command/delete")
-def delete_dir():
+async def delete_dir_from_server():
     """recreating uploads dir and copying smaple.jpg file again.
     sample.jpg is for pytest purpose.
     """
@@ -159,7 +159,7 @@ def delete_dir():
 
 
 @app.get("/command/show")
-def show_dir():
+async def show_dir_status():
     """ Show content of uploads dir """
     image_name = os.listdir(UPLOADS_DIR)
     return (
