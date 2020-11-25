@@ -1,1 +1,1 @@
-web: waitress-serve --port=$PORT manage:app
+web: uvicorn manage:app --host=0.0.0.0 --port=${PORT:-5000}

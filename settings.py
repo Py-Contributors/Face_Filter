@@ -15,10 +15,10 @@ ASSETS_DIR = joinpath(BASE_DIR, "assets")
 FILTERS_DIR = joinpath(BASE_DIR, "filters")
 
 """ Json data """
-title = "OpenCV Rest API with Flask for Face Detection and Face Filters"
+title = "OpenCV Rest API with FastAPI for Face Detection and Face Filters"
 api_version = "0.0.2-alpha"
 base_url = "https://opencv-api.herokuapp.com"
-documentation_url = "https://opencv-api.readthedocs.io/"
+documentation_url = "http://localhost:8000/redoc"
 current_time = datetime.utcnow()
 num_of_image_on_server = len(os.listdir(UPLOADS_DIR))
 
