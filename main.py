@@ -1,13 +1,13 @@
+import os
+import cv2
+import shutil
+from PIL import Image
 from os.path import join as joinpath
 from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.responses import FileResponse
-import shutil
-import cv2
-from PIL import Image
-import os
 
 import settings
-from settings import UPLOADS_DIR,base_url
+from settings import UPLOADS_DIR, base_url
 from utils import faceDetectionv1, faceDetectionv2, faceFilterv1
 
 app = FastAPI()
