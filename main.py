@@ -1,5 +1,5 @@
 from os.path import join as joinpath
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.responses import FileResponse
 import shutil
 import cv2
@@ -113,13 +113,13 @@ async def face_filter_version_1_get():
     )
     
 @app.post('/api/v1/facefilter')
-async def face_filter_version_1(image: UploadFile = File(...)):
+async def face_filter_version_1(image: UploadFile = File(...), mask_num: int=Form(...)):
     filename = image.filename
     image_path = joinpath(UPLOADS_DIR, filename)
     with open(image_path, 'wb') as buffer:           
         shutil.copyfileobj(image.file, buffer)
     
-    preprocess_img= faceFilterv1(image_path)
+    preprocess_img= faceFilterv1(image_path, mask_num)
     # change BGR image RGb
     preprocess_img = cv2.cvtColor(preprocess_img, cv2.COLOR_BGR2RGB)
     output_image = Image.fromarray(preprocess_img, "RGB")
