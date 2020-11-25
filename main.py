@@ -1,3 +1,6 @@
+"""
+Main Script for GET and POST Request Route.
+"""
 import os
 import cv2
 import shutil
@@ -29,7 +32,6 @@ async def home():
             "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
             "supported_image_type": "{Jpg, Png}",
             "time": settings.current_time,
-            "total_image_on_server": settings.num_of_image_on_server,
         }
     )
 
@@ -163,7 +165,7 @@ async def show_dir_status():
     """ Show content of uploads dir """
     image_name = os.listdir(UPLOADS_DIR)
     return (
-        {"total_image": settings.num_of_image_on_server, "image_name": image_name}
+        {"total_image": len(image_name), "image_name": image_name}
     )
 
 

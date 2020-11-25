@@ -8,6 +8,12 @@ from pathlib import Path
 from datetime import datetime
 from os.path import isdir, join as joinpath
 
+BASE_DIR = Path(__file__).resolve().parent
+
+UPLOADS_DIR = joinpath(BASE_DIR, "uploads")
+ASSETS_DIR = joinpath(BASE_DIR, "assets")
+FILTERS_DIR = joinpath(BASE_DIR, "filters")
+
 def create_directory(folder_name):
     """ Create new directory """
     if not isdir(folder_name):
@@ -28,13 +34,8 @@ def recreate_uploads_dir():
     except Exception as error:
         print(error)
 
-create_directory('uploads')
-
-BASE_DIR = Path(__file__).resolve().parent
-
-UPLOADS_DIR = joinpath(BASE_DIR, "uploads")
-ASSETS_DIR = joinpath(BASE_DIR, "assets")
-FILTERS_DIR = joinpath(BASE_DIR, "filters")
+# creaing uploads directry
+recreate_uploads_dir()
 
 """ Json data """
 title = "OpenCV Rest API with FastAPI for Face Detection and Face Filters"
