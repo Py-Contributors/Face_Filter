@@ -1,4 +1,6 @@
 """
+FastAPI-0.61.2
+
 Main Script for GET and POST Request Route.
 """
 import os
@@ -35,6 +37,7 @@ async def home():
         }
     )
 
+
 @app.get('/api/v1/facedetection')
 async def face_detection_version_1_get():
     return (
@@ -45,6 +48,7 @@ async def face_detection_version_1_get():
             "documentation": f"{settings.documentation_url}",
         }
     )
+
 
 @app.post('/api/v1/facedetection')
 async def face_detection_version_1(image: UploadFile = File(...)):
@@ -69,6 +73,7 @@ async def face_detection_version_1(image: UploadFile = File(...)):
                 "documentation": f"{settings.documentation_url}",
             }
 
+
 @app.get('/api/v2/facedetection')
 async def face_detection_version_2_get():
     return (
@@ -79,6 +84,7 @@ async def face_detection_version_2_get():
             "documentation": f"{settings.documentation_url}",
         }
     )
+
 
 @app.post('/api/v2/facedetection')
 async def face_detection_version_2(image: UploadFile = File(...)):
@@ -103,6 +109,7 @@ async def face_detection_version_2(image: UploadFile = File(...)):
                 "documentation": f"{settings.documentation_url}",
             }
 
+
 @app.get('/api/v1/facefilter')
 async def face_filter_version_1_get():
     return (
@@ -113,7 +120,8 @@ async def face_filter_version_1_get():
             "documentation": f"{settings.documentation_url}",
         }
     )
-    
+
+
 @app.post('/api/v1/facefilter')
 async def face_filter_version_1(image: UploadFile = File(...), mask_num: int=Form(...)):
     filename = image.filename
@@ -137,9 +145,11 @@ async def face_filter_version_1(image: UploadFile = File(...), mask_num: int=For
                 "documentation": f"{settings.documentation_url}",
             }
 
+
 @app.get('/uploads/{image_dest}')
 async def get_img_from_server(image_dest):
     return FileResponse(f"uploads/{image_dest}")
+
 
 @app.get("/uploads/{image_dest}/delete")
 async def delete_image_from_server(image_dest):
@@ -153,8 +163,9 @@ async def delete_image_from_server(image_dest):
 
 @app.get("/command/delete")
 async def delete_dir_from_server():
-    """recreating uploads dir and copying smaple.jpg file again.
-    sample.jpg is for pytest purpose.
+    """
+    Command for recreate uploads directory,s
+    It's not for production purpose.
     """
     settings.recreate_uploads_dir()
     return ({"status": "clearning uploads folder"})

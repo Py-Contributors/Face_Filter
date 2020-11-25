@@ -2,9 +2,6 @@
 Icon=folder-yellow
 
 [Dolphin]
-Timestamp=2020,11,25,18,3,22
+Timestamp=2020,11,25,22,6,37
 Version=4
 VisibleRoles=Icons_text,Icons_size
-
-[Settings]
-HiddenFilesShown=true
