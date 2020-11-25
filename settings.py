@@ -8,21 +8,6 @@ from pathlib import Path
 from datetime import datetime
 from os.path import isdir, join as joinpath
 
-BASE_DIR = Path(__file__).resolve().parent
-
-UPLOADS_DIR = joinpath(BASE_DIR, "uploads")
-ASSETS_DIR = joinpath(BASE_DIR, "assets")
-FILTERS_DIR = joinpath(BASE_DIR, "filters")
-
-""" Json data """
-title = "OpenCV Rest API with FastAPI for Face Detection and Face Filters"
-api_version = "0.0.2-alpha"
-base_url = "https://opencv-api.herokuapp.com"
-documentation_url = "https://opencv-api.herokuapp.com/docs"
-current_time = datetime.utcnow()
-num_of_image_on_server = len(os.listdir(UPLOADS_DIR))
-
-
 def create_directory(folder_name):
     """ Create new directory """
     if not isdir(folder_name):
@@ -42,3 +27,21 @@ def recreate_uploads_dir():
         )
     except Exception as error:
         print(error)
+
+create_directory('uploads')
+
+BASE_DIR = Path(__file__).resolve().parent
+
+UPLOADS_DIR = joinpath(BASE_DIR, "uploads")
+ASSETS_DIR = joinpath(BASE_DIR, "assets")
+FILTERS_DIR = joinpath(BASE_DIR, "filters")
+
+""" Json data """
+title = "OpenCV Rest API with FastAPI for Face Detection and Face Filters"
+api_version = "0.0.2-alpha"
+base_url = "https://opencv-api.herokuapp.com"
+documentation_url = "https://opencv-api.herokuapp.com/docs"
+current_time = datetime.utcnow()
+num_of_image_on_server = len(os.listdir(UPLOADS_DIR))
+
+
