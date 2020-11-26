@@ -10,6 +10,7 @@ from PIL import Image
 from os.path import join as joinpath
 from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.responses import FileResponse
+from fastapi.openapi.utils import get_openapi
 
 import settings
 from settings import UPLOADS_DIR, base_url
@@ -183,3 +184,21 @@ async def show_dir_status():
 """ empty the uploads dir if total no. of image is more than 50. """
 if settings.num_of_image_on_server > 50:
     settings.recreate_uploads_dir()
+
+
+def custom_openapi():
+    if app.openapi_schema:
+        return app.openapi_schema
+    openapi_schema = get_openapi(
+        title="OpenCV-API",
+        version="0.0.2-alpha",
+        description="Rest API for Face Detection and Face Filters using ",
+        routes=app.routes,
+    )
+    openapi_schema["info"]["x-logo"] = {
+        "url": "https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png"
+    }
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
+
+app.openapi = custom_openapi

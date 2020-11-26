@@ -16,4 +16,8 @@ file_path = os.path.join(ASSETS_DIR, "sample.jpg")
 
 def test_app():
     """ Test case for Face Detection version 1 """
-    pass
+    data = {"file": open(file_path, "rb")}
+    response = client.post(
+        "api/v1/facedetection", data=data)
+    assert response.status_code == 200
+    assert type(response.data) == bytes

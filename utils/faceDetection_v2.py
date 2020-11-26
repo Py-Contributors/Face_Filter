@@ -39,6 +39,6 @@ def faceDetectionv2(imgPath):
         box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
         (startX, startY, endX, endY) = box.astype("int")
         y = startY - 10 if startY - 10 > 10 else startY + 10
-        cv2.rectangle(img, (startX, startY), (endX, endY), (0, 255, 0), 2)
+        cv2.rectangle(img, (startX, startY), (endX, endY), (0, 255, 0), 3)
 
     return img

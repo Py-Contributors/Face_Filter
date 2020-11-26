@@ -43,10 +43,10 @@ def faceDetectionv1(img):
         )
         roi_gray = gray[y : y + height, x : x + width]
         roi_color = img[y : y + height, x : x + width]
-
+      
         smiles = smile_cascade.detectMultiScale(roi_gray)
         for (sx, sy, sw, sh) in smiles:
-            cv2.rectangle(roi_color, (sx, sy), ((sx + sw), (sy + sh)), (0, 0, 255), 2)
+            cv2.rectangle(roi_color, (sx, sy), ((sx + sw), (sy + sh)), (0, 0, 255), 3)
 
         eyes = eye_cascade.detectMultiScale(roi_gray)
         for (ex, ey, ew, eh) in eyes:
