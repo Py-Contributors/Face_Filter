@@ -35,7 +35,7 @@ def recreate_uploads_dir():
         print(error)
 
 # creaing uploads directry
-recreate_uploads_dir()
+create_directory('uploads')
 
 """ Json data """
 title = "OpenCV Rest API with FastAPI for Face Detection and Face Filters"
