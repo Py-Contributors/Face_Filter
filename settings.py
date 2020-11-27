@@ -45,4 +45,4 @@ documentation_url = "https://opencv-api.herokuapp.com/docs"
 current_time = datetime.utcnow()
 num_of_image_on_server = len(os.listdir(UPLOADS_DIR))
 
-
+MAX_CONTENT_LENGTH = 2097152

@@ -8,7 +8,7 @@ import cv2
 import shutil
 from PIL import Image
 from os.path import join as joinpath
-from fastapi import FastAPI, File, UploadFile, Form
+from fastapi import FastAPI, File, UploadFile, Form, status
 from fastapi.responses import FileResponse
 from fastapi.openapi.utils import get_openapi
 
@@ -39,7 +39,7 @@ async def home():
     )
 
 
-@app.get('/api/v1/facedetection')
+@app.get('/api/v1/facedetection/')
 async def face_detection_version_1_get():
     return (
         {
@@ -51,7 +51,7 @@ async def face_detection_version_1_get():
     )
 
 
-@app.post('/api/v1/facedetection')
+@app.post('/api/v1/facedetection/', status_code=status.HTTP_201_CREATED)
 async def face_detection_version_1(image: UploadFile = File(...)):
     filename = image.filename
     image_path = joinpath(UPLOADS_DIR, filename)
@@ -75,7 +75,7 @@ async def face_detection_version_1(image: UploadFile = File(...)):
             }
 
 
-@app.get('/api/v2/facedetection')
+@app.get('/api/v2/facedetection/')
 async def face_detection_version_2_get():
     return (
         {
@@ -87,7 +87,7 @@ async def face_detection_version_2_get():
     )
 
 
-@app.post('/api/v2/facedetection')
+@app.post('/api/v2/facedetection/', status_code=status.HTTP_201_CREATED)
 async def face_detection_version_2(image: UploadFile = File(...)):
     filename = image.filename
     image_path = joinpath(UPLOADS_DIR, filename)
@@ -111,7 +111,7 @@ async def face_detection_version_2(image: UploadFile = File(...)):
             }
 
 
-@app.get('/api/v1/facefilter')
+@app.get('/api/v1/facefilter/')
 async def face_filter_version_1_get():
     return (
         {
@@ -123,7 +123,7 @@ async def face_filter_version_1_get():
     )
 
 
-@app.post('/api/v1/facefilter')
+@app.post('/api/v1/facefilter/', status_code=status.HTTP_201_CREATED)
 async def face_filter_version_1(image: UploadFile = File(...), mask_num: int=Form(...)):
     filename = image.filename
     image_path = joinpath(UPLOADS_DIR, filename)
@@ -147,12 +147,12 @@ async def face_filter_version_1(image: UploadFile = File(...), mask_num: int=For
             }
 
 
-@app.get('/uploads/{image_dest}')
+@app.get('/uploads/{image_dest}/')
 async def get_img_from_server(image_dest):
     return FileResponse(f"uploads/{image_dest}")
 
 
-@app.get("/uploads/{image_dest}/delete")
+@app.get("/uploads/{image_dest}/delete/")
 async def delete_image_from_server(image_dest):
     """ Delete image from serer  """
     try:
@@ -162,7 +162,7 @@ async def delete_image_from_server(image_dest):
     return ({"file_name": image_dest, "delete_it_from_server": True})
 
 
-@app.get("/command/delete")
+@app.get("/command/delete/")
 async def delete_dir_from_server():
     """
     Command for recreate uploads directory,s
@@ -172,7 +172,7 @@ async def delete_dir_from_server():
     return ({"status": "clearning uploads folder"})
 
 
-@app.get("/command/show")
+@app.get("/command/show/")
 async def show_dir_status():
     """ Show content of uploads dir """
     image_name = os.listdir(UPLOADS_DIR)
