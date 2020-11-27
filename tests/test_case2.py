@@ -21,7 +21,7 @@ def test_app():
         "file": open(file_path, 'rb')
     },
     )
-    response.status_code == 400
+    response.status_code == 200
     response.json() == dict
 
     response =client.post("/api/v2/facedetection/",
