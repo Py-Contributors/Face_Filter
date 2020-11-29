@@ -213,9 +213,3 @@ def custom_openapi():
     return app.openapi_schema
 
 app.openapi = custom_openapi
-
-import time
-import requests
-while True:
-    time.sleep(1800)
-    requests.get(base_url)
