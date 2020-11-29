@@ -50,29 +50,32 @@ async def face_detection_version_1_get():
         }
     )
 
-
 @app.post('/api/v1/facedetection/', status_code=status.HTTP_201_CREATED)
-async def face_detection_version_1(image: UploadFile = File(...)):
-    filename = image.filename
-    image_path = joinpath(UPLOADS_DIR, filename)
-    with open(image_path, 'wb') as buffer:           
-        shutil.copyfileobj(image.file, buffer)
-    
-    preprocess_img, _= faceDetectionv1(image_path)
-    # change BGR image RGb
-    preprocess_img = cv2.cvtColor(preprocess_img, cv2.COLOR_BGR2RGB)
-    output_image = Image.fromarray(preprocess_img, "RGB")
-    output_image.save(image_path)
+async def face_detection_version_1(image: UploadFile = File(None, media_type='image/jpeg')):
+    if image.content_type == 'image/jpeg':
+        filename = image.filename
+        image_path = joinpath(UPLOADS_DIR, filename)
+        with open(image_path, 'wb') as buffer:           
+            shutil.copyfileobj(image.file, buffer)
+        
+        preprocess_img, _= faceDetectionv1(image_path)
+        # change BGR image RGb
+        preprocess_img = cv2.cvtColor(preprocess_img, cv2.COLOR_BGR2RGB)
+        output_image = Image.fromarray(preprocess_img, "RGB")
+        output_image.save(image_path)
 
+        return {
+                    "title": settings.title,
+                    "api_version": settings.api_version,
+                    "file_name": filename,
+                    "output_image_url": f"{base_url}/uploads/{filename}",
+                    "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
+                    "time": settings.current_time,
+                    "documentation": f"{settings.documentation_url}",
+                }
     return {
-                "title": settings.title,
-                "api_version": settings.api_version,
-                "file_name": filename,
-                "output_image_url": f"{base_url}/uploads/{filename}",
-                "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
-                "time": settings.current_time,
-                "documentation": f"{settings.documentation_url}",
-            }
+        'status': 'Input File is not A Image'
+    }
 
 
 @app.get('/api/v2/facedetection/')
@@ -88,27 +91,31 @@ async def face_detection_version_2_get():
 
 
 @app.post('/api/v2/facedetection/', status_code=status.HTTP_201_CREATED)
-async def face_detection_version_2(image: UploadFile = File(...)):
-    filename = image.filename
-    image_path = joinpath(UPLOADS_DIR, filename)
-    with open(image_path, 'wb') as buffer:           
-        shutil.copyfileobj(image.file, buffer)
-    
-    preprocess_img= faceDetectionv2(image_path)
-    # change BGR image RGb
-    preprocess_img = cv2.cvtColor(preprocess_img, cv2.COLOR_BGR2RGB)
-    output_image = Image.fromarray(preprocess_img, "RGB")
-    output_image.save(image_path)
+async def face_detection_version_2(image: UploadFile = File(None, media_type='image/jpeg')):
+    if image.content_type == 'image/jpeg':
+        filename = image.filename
+        image_path = joinpath(UPLOADS_DIR, filename)
+        with open(image_path, 'wb') as buffer:           
+            shutil.copyfileobj(image.file, buffer)
+        
+        preprocess_img= faceDetectionv2(image_path)
+        # change BGR image RGb
+        preprocess_img = cv2.cvtColor(preprocess_img, cv2.COLOR_BGR2RGB)
+        output_image = Image.fromarray(preprocess_img, "RGB")
+        output_image.save(image_path)
 
+        return {
+                    "title": settings.title,
+                    "api_version": settings.api_version,
+                    "file_name": filename,
+                    "output_image_url": f"{base_url}/uploads/{filename}",
+                    "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
+                    "time": settings.current_time,
+                    "documentation": f"{settings.documentation_url}",
+                }
     return {
-                "title": settings.title,
-                "api_version": settings.api_version,
-                "file_name": filename,
-                "output_image_url": f"{base_url}/uploads/{filename}",
-                "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
-                "time": settings.current_time,
-                "documentation": f"{settings.documentation_url}",
-            }
+        'status': 'Input File is not A Image'
+    }
 
 
 @app.get('/api/v1/facefilter/')
@@ -124,27 +131,31 @@ async def face_filter_version_1_get():
 
 
 @app.post('/api/v1/facefilter/', status_code=status.HTTP_201_CREATED)
-async def face_filter_version_1(image: UploadFile = File(...), mask_num: int=Form(...)):
-    filename = image.filename
-    image_path = joinpath(UPLOADS_DIR, filename)
-    with open(image_path, 'wb') as buffer:           
-        shutil.copyfileobj(image.file, buffer)
-    
-    preprocess_img= faceFilterv1(image_path, mask_num)
-    # change BGR image RGb
-    preprocess_img = cv2.cvtColor(preprocess_img, cv2.COLOR_BGR2RGB)
-    output_image = Image.fromarray(preprocess_img, "RGB")
-    output_image.save(image_path)
+async def face_filter_version_1(image: UploadFile = File(None, media_type='image/jpeg'), mask_num: int = Form(...)):
+    if image.content_type == 'image/jpeg':
+        filename = image.filename
+        image_path = joinpath(UPLOADS_DIR, filename)
+        with open(image_path, 'wb') as buffer:           
+            shutil.copyfileobj(image.file, buffer)
+        
+        preprocess_img= faceFilterv1(image_path, mask_num)
+        # change BGR image RGb
+        preprocess_img = cv2.cvtColor(preprocess_img, cv2.COLOR_BGR2RGB)
+        output_image = Image.fromarray(preprocess_img, "RGB")
+        output_image.save(image_path)
 
+        return {
+                    "title": settings.title,
+                    "api_version": settings.api_version,
+                    "file_name": filename,
+                    "output_image_url": f"{base_url}/uploads/{filename}",
+                    "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
+                    "time": settings.current_time,
+                    "documentation": f"{settings.documentation_url}",
+                }
     return {
-                "title": settings.title,
-                "api_version": settings.api_version,
-                "file_name": filename,
-                "output_image_url": f"{base_url}/uploads/{filename}",
-                "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
-                "time": settings.current_time,
-                "documentation": f"{settings.documentation_url}",
-            }
+        'status': 'Input File is not A Image'
+    }
 
 
 @app.get('/uploads/{image_dest}/')
@@ -202,3 +213,7 @@ def custom_openapi():
     return app.openapi_schema
 
 app.openapi = custom_openapi
+
+import time
+while True:
+    time.sleep(1800)
