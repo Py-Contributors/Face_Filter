@@ -5,7 +5,7 @@ h11==0.11.0
 idna==2.10
 numpy==1.19.4
 opencv-python-headless==4.4.0.46
-Pillow==8.0.1
+Pillow==8.3.2
 pydantic==1.7.2
 python-multipart==0.0.5
 requests==2.25.0
