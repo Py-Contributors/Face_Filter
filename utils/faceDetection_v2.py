@@ -22,6 +22,15 @@ net = cv2.dnn.readNetFromCaffe(proto, model)
 
 
 def faceDetectionv2(imgPath):
+    """
+    Face Detection V2 using OpenCV DNN
+
+    Args:
+        imgPath (str): Image path to detect face
+    
+    Returns:
+        img (numpy.ndarray): Image with rectangle mark on face
+    """
     img = cv2.imread(imgPath)
 
     (h, w) = img.shape[:2]

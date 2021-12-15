@@ -14,7 +14,8 @@ from fastapi.openapi.utils import get_openapi
 
 import settings
 from settings import UPLOADS_DIR, base_url
-from utils import faceDetectionv1, faceDetectionv2, faceFilterv1
+from utils import faceDetectionv1, faceDetectionv2
+from utils import faceFilterv1, faceFilterv2
 
 app = FastAPI()
 
@@ -139,6 +140,34 @@ async def face_filter_version_1(image: UploadFile = File(None, media_type='image
             shutil.copyfileobj(image.file, buffer)
         
         preprocess_img= faceFilterv1(image_path, mask_num)
+        # change BGR image RGb
+        preprocess_img = cv2.cvtColor(preprocess_img, cv2.COLOR_BGR2RGB)
+        output_image = Image.fromarray(preprocess_img, "RGB")
+        output_image.save(image_path)
+
+        return {
+                    "title": settings.title,
+                    "api_version": settings.api_version,
+                    "file_name": filename,
+                    "output_image_url": f"{base_url}/uploads/{filename}",
+                    "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
+                    "time": settings.current_time,
+                    "documentation": f"{settings.documentation_url}",
+                }
+    return {
+        'status': 'Input File is not A Image'
+    }
+
+
+@app.post('/api/v1/facefilter/', status_code=status.HTTP_201_CREATED)
+async def face_filter_version_2(image: UploadFile = File(None, media_type='image/jpeg'), mask_num: int = Form(...)):
+    if image.content_type == 'image/jpeg':
+        filename = image.filename
+        image_path = joinpath(UPLOADS_DIR, filename)
+        with open(image_path, 'wb') as buffer:           
+            shutil.copyfileobj(image.file, buffer)
+        
+        preprocess_img= faceFilterv2(image_path, mask_num)
         # change BGR image RGb
         preprocess_img = cv2.cvtColor(preprocess_img, cv2.COLOR_BGR2RGB)
         output_image = Image.fromarray(preprocess_img, "RGB")

@@ -34,14 +34,14 @@ def recreate_uploads_dir():
     except Exception as error:
         print(error)
 
-# creaing uploads directry
+# creating uploads directory
 create_directory('uploads')
 
 """ Json data """
 title = "OpenCV Rest API with FastAPI for Face Detection and Face Filters"
-api_version = "0.0.2-alpha"
-base_url = "https://opencv-api.herokuapp.com"
-documentation_url = "https://opencv-api.herokuapp.com/docs"
+api_version = "1.0.0"
+base_url = "https://face-filter-api.herokuapp.com/"
+documentation_url = "https://face-filter-api.herokuapp.com/docs"
 current_time = datetime.utcnow()
 num_of_image_on_server = len(os.listdir(UPLOADS_DIR))
 

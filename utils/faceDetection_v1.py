@@ -25,6 +25,15 @@ smile_cascade = cv2.CascadeClassifier(smile_path)
 
 
 def faceDetectionv1(img):
+    """
+    Face Detection V1 using OpenCV Haar Cascade Frontal Face Classifier
+
+    Args:
+        img (numpy.ndarray): Image to detect face
+    
+    Returns:
+        img (numpy.ndarray): Image with rectangle mark on face
+    """
     img = cv2.imread(img)
 
     gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
