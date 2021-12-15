@@ -14,15 +14,6 @@ UPLOADS_DIR = joinpath(BASE_DIR, "uploads")
 ASSETS_DIR = joinpath(BASE_DIR, "assets")
 FILTERS_DIR = joinpath(BASE_DIR, "filters")
 
-""" Json data """
-title = "OpenCV Rest API with Flask for Face Detection and Face Filters"
-api_version = "0.0.2-alpha"
-base_url = "http://opencv-api-flask.herokuapp.com/"
-documentation_url = "https://opencv-api.readthedocs.io/"
-current_time = datetime.utcnow()
-num_of_image_on_server = len(os.listdir(UPLOADS_DIR))
-
-
 def create_directory(folder_name):
     """ Create new directory """
     if not isdir(folder_name):
@@ -42,3 +33,16 @@ def recreate_uploads_dir():
         )
     except Exception as error:
         print(error)
+
+# creating uploads directory
+create_directory('uploads')
+
+""" Json data """
+title = "OpenCV Rest API with FastAPI for Face Detection and Face Filters"
+api_version = "1.0.0"
+base_url = "https://face-filter-api.herokuapp.com/"
+documentation_url = "https://face-filter-api.herokuapp.com/docs"
+current_time = datetime.utcnow()
+num_of_image_on_server = len(os.listdir(UPLOADS_DIR))
+
+MAX_CONTENT_LENGTH = 2097152

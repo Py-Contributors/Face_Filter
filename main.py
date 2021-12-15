@@ -12,8 +12,8 @@ from flask import Flask, request, jsonify, send_file
 
 import settings
 from settings import UPLOADS_DIR, base_url
-from utils import faceFilterv1, faceDetectionv1
-from utils import faceDetectionv2
+from utils import faceDetectionv1, faceFilterv1
+from utils import faceDetectionv2, faceFilterv2
 
 app = Flask(__name__)
 
@@ -198,11 +198,49 @@ def face_detection_v2():
         }
     )
 
-
 @app.route("/api/v2/facefilter", methods=["GET", "POST"])
 def face_filter_v2():
     """ Face filter V2 """
-    pass
+    if request.method == "POST":
+        upload_file = request.files["file"]
+        mask_num = request.form["mask"]
+
+        filename = secure_filename(upload_file.filename)
+        if filename != "":
+            file_ext = os.path.splitext(filename)[1]
+            if file_ext not in app.config[
+                "UPLOAD_EXTENSIONS"
+            ] or file_ext != validate_image(upload_file.stream):
+                return "Invalid Image", 400
+
+            image_path = "/".join([UPLOADS_DIR, filename])
+
+            upload_file.save(image_path)
+
+            preprocess_image = faceFilterv2(image_path, mask_num)
+            preprocess_image = cv2.cvtColor(preprocess_image, cv2.COLOR_BGR2RGB)
+            output_image = Image.fromarray(preprocess_image, "RGB")
+            output_image.save(image_path)
+
+            return jsonify(
+                {
+                    "title": settings.title,
+                    "api_version": settings.api_version,
+                    "file_name": filename,
+                    "output_image_url": f"{base_url}/uploads/{filename}",
+                    "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
+                    "time": settings.current_time,
+                    "documentation": f"{settings.documentation_url}",
+                }
+            )
+    return jsonify(
+        {
+            "title": "Face Filter Version 1",
+            "API Version": settings.api_version,
+            "status": "Create post request for face-filters",
+            "documentation": f"{settings.documentation_url}",
+        }
+    )
 
 
 @app.route("/uploads/<image_dest>", methods=["GET"])
