@@ -47,7 +47,7 @@ def faceFilterv1(input_image: str, mask_num: int):
     # Convert to black-and-white
     gray = cv2.cvtColor(input_image, cv2.COLOR_RGB2GRAY)
     blackwhite = cv2.equalizeHist(gray)
-    # Detect faces
+    # Detect faces by creating a rectangle around each face
     rects = cascade.detectMultiScale(
         blackwhite,
         scaleFactor=1.3,
@@ -55,7 +55,7 @@ def faceFilterv1(input_image: str, mask_num: int):
         minSize=(30, 30),
         flags=cv2.CASCADE_SCALE_IMAGE,
     )
-    # Add mask to faces
+    # Iterate over each face and apply the mask
     for x, y, w, h in rects:
         # crop a frame slightly larger than the face
         y0, y1 = int(y - 0.25 * h), int(y + 0.75 * h)
