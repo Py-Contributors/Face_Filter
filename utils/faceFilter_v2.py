@@ -24,14 +24,14 @@ confThresh = 0.8
 net = cv2.dnn.readNetFromCaffe(proto, model)
 
 
-def faceFilterv2(imgPath, mask_num):
+async def faceFilterv2(imgPath, mask_num):
     """
     FaceFilter V2 using OpenCV DNN
 
     Args:
         imgPath (str): Path to image
         mask_num (int): Mask number to apply
-    
+
     Returns:
         img (numpy.ndarray): Image with mask applied
     """
@@ -59,6 +59,8 @@ def faceFilterv2(imgPath, mask_num):
 
         box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
         (startX, startY, endX, endY) = box.astype("int")
-        
-        img[startY:endY, startX:endX] = applyMask(img[startY:endY, startX:endX], mask)
+
+        img[startY:endY, startX:endX] = applyMask(img[startY:endY,
+                                                      startX:endX], mask)
+
     return img

@@ -8,7 +8,6 @@ Output :
     Applied mask on face
 """
 import os
-import numpy as np
 import cv2
 
 from utils.apply_mask import applyMask
@@ -16,13 +15,13 @@ from settings import ASSETS_DIR
 
 
 def faceFilterv1(input_image: str, mask_num: int):
-    """ 
+    """
     Face Filter V1 using OpenCV Haar Cascade Frontal Face Classifier
 
     Args:
         input_image (str): Path to image
         mask_num (int): Mask number to apply
-    
+
     Returns:
         img (numpy.ndarray): Image with mask applied
     """
@@ -41,7 +40,6 @@ def faceFilterv1(input_image: str, mask_num: int):
         os.path.join(ASSETS_DIR, "haarcascade_frontalface_default.xml")
     )
 
-    
     # Capture frame-by-frame
     frame_h, frame_w, _ = input_image.shape
     # Convert to black-and-white

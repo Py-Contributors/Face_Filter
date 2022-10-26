@@ -19,6 +19,7 @@ from utils import faceFilterv1, faceFilterv2
 
 app = FastAPI()
 
+
 @app.get("/")
 async def home():
     """ OpenCV FaceFilter RestAPI"""
@@ -31,9 +32,8 @@ async def home():
             "face_detection_v1": f"{base_url}/api/v1/facedetection",
             "face_detection_v2": f"{base_url}/api/v2/facedetection",
             "author": "Deepak Raj",
-            "github": "https://github.com/codeperfectplus",
+            "github": "https://github.com/py-contributors",
             "email": "deepak008@live.com",
-            "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
             "supported_image_type": "{Jpg, Png}",
             "time": settings.current_time,
         }
@@ -51,15 +51,17 @@ async def face_detection_version_1_get():
         }
     )
 
+
 @app.post('/api/v1/facedetection/', status_code=status.HTTP_201_CREATED)
-async def face_detection_version_1(image: UploadFile = File(None, media_type='image/jpeg')):
+async def face_detection_version_1(image: UploadFile = File(None,
+                                   media_type='image/jpeg')):
     if image.content_type == 'image/jpeg':
         filename = image.filename
         image_path = joinpath(UPLOADS_DIR, filename)
-        with open(image_path, 'wb') as buffer:           
+        with open(image_path, 'wb') as buffer:
             shutil.copyfileobj(image.file, buffer)
-        
-        preprocess_img, _= faceDetectionv1(image_path)
+
+        preprocess_img, _ = faceDetectionv1(image_path)
         # change BGR image RGb
         preprocess_img = cv2.cvtColor(preprocess_img, cv2.COLOR_BGR2RGB)
         output_image = Image.fromarray(preprocess_img, "RGB")
@@ -70,7 +72,6 @@ async def face_detection_version_1(image: UploadFile = File(None, media_type='im
                     "api_version": settings.api_version,
                     "file_name": filename,
                     "output_image_url": f"{base_url}/uploads/{filename}",
-                    "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
                     "time": settings.current_time,
                     "documentation": f"{settings.documentation_url}",
                 }
@@ -92,14 +93,15 @@ async def face_detection_version_2_get():
 
 
 @app.post('/api/v2/facedetection/', status_code=status.HTTP_201_CREATED)
-async def face_detection_version_2(image: UploadFile = File(None, media_type='image/jpeg')):
+async def face_detection_version_2(image: UploadFile = File(None,
+                                   media_type='image/jpeg')):
     if image.content_type == 'image/jpeg':
         filename = image.filename
         image_path = joinpath(UPLOADS_DIR, filename)
-        with open(image_path, 'wb') as buffer:           
+        with open(image_path, 'wb') as buffer:
             shutil.copyfileobj(image.file, buffer)
-        
-        preprocess_img= faceDetectionv2(image_path)
+
+        preprocess_img = faceDetectionv2(image_path)
         # change BGR image RGb
         preprocess_img = cv2.cvtColor(preprocess_img, cv2.COLOR_BGR2RGB)
         output_image = Image.fromarray(preprocess_img, "RGB")
@@ -110,7 +112,6 @@ async def face_detection_version_2(image: UploadFile = File(None, media_type='im
                     "api_version": settings.api_version,
                     "file_name": filename,
                     "output_image_url": f"{base_url}/uploads/{filename}",
-                    "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
                     "time": settings.current_time,
                     "documentation": f"{settings.documentation_url}",
                 }
@@ -132,14 +133,16 @@ async def face_filter_version_1_get():
 
 
 @app.post('/api/v1/facefilter/', status_code=status.HTTP_201_CREATED)
-async def face_filter_version_1(image: UploadFile = File(None, media_type='image/jpeg'), mask_num: int = Form(...)):
+async def face_filter_version_1(image: UploadFile = File(None,
+                                media_type='image/jpeg'),
+                                mask_num: int = Form(...)):
     if image.content_type == 'image/jpeg':
         filename = image.filename
         image_path = joinpath(UPLOADS_DIR, filename)
-        with open(image_path, 'wb') as buffer:           
+        with open(image_path, 'wb') as buffer:
             shutil.copyfileobj(image.file, buffer)
-        
-        preprocess_img= faceFilterv1(image_path, mask_num)
+
+        preprocess_img = faceFilterv1(image_path, mask_num)
         # change BGR image RGb
         preprocess_img = cv2.cvtColor(preprocess_img, cv2.COLOR_BGR2RGB)
         output_image = Image.fromarray(preprocess_img, "RGB")
@@ -150,7 +153,6 @@ async def face_filter_version_1(image: UploadFile = File(None, media_type='image
                     "api_version": settings.api_version,
                     "file_name": filename,
                     "output_image_url": f"{base_url}/uploads/{filename}",
-                    "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
                     "time": settings.current_time,
                     "documentation": f"{settings.documentation_url}",
                 }
@@ -160,14 +162,17 @@ async def face_filter_version_1(image: UploadFile = File(None, media_type='image
 
 
 @app.post('/api/v1/facefilter/', status_code=status.HTTP_201_CREATED)
-async def face_filter_version_2(image: UploadFile = File(None, media_type='image/jpeg'), mask_num: int = Form(...)):
+async def face_filter_version_2(image: UploadFile = File(None,
+                                media_type='image/jpeg'),
+                                mask_num: int = Form(...)):
+
     if image.content_type == 'image/jpeg':
         filename = image.filename
         image_path = joinpath(UPLOADS_DIR, filename)
-        with open(image_path, 'wb') as buffer:           
+        with open(image_path, 'wb') as buffer:
             shutil.copyfileobj(image.file, buffer)
-        
-        preprocess_img= faceFilterv2(image_path, mask_num)
+
+        preprocess_img = faceFilterv2(image_path, mask_num)
         # change BGR image RGb
         preprocess_img = cv2.cvtColor(preprocess_img, cv2.COLOR_BGR2RGB)
         output_image = Image.fromarray(preprocess_img, "RGB")
@@ -178,7 +183,6 @@ async def face_filter_version_2(image: UploadFile = File(None, media_type='image
                     "api_version": settings.api_version,
                     "file_name": filename,
                     "output_image_url": f"{base_url}/uploads/{filename}",
-                    "image_retain_policy": "Image will not use in any purpose. It will be delete from server in some time. So Save your Output image.",
                     "time": settings.current_time,
                     "documentation": f"{settings.documentation_url}",
                 }
@@ -240,5 +244,6 @@ def custom_openapi():
     }
     app.openapi_schema = openapi_schema
     return app.openapi_schema
+
 
 app.openapi = custom_openapi
