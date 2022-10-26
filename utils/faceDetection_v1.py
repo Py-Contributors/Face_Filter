@@ -30,7 +30,7 @@ def faceDetectionv1(img):
 
     Args:
         img (numpy.ndarray): Image to detect face
-    
+
     Returns:
         img (numpy.ndarray): Image with rectangle mark on face
     """
@@ -50,12 +50,17 @@ def faceDetectionv1(img):
             (0, 0, 255),
             1,
         )
-        roi_gray = gray[y : y + height, x : x + width]
-        roi_color = img[y : y + height, x : x + width]
-      
+        roi_gray = gray[y: y + height, x: x + width]
+        roi_color = img[y: y + height, x: x + width]
+
         smiles = smile_cascade.detectMultiScale(roi_gray)
         for (sx, sy, sw, sh) in smiles:
-            cv2.rectangle(roi_color, (sx, sy), ((sx + sw), (sy + sh)), (0, 0, 255), 3)
+            cv2.rectangle(roi_color,
+                          (sx, sy),
+                          ((sx + sw),
+                           (sy + sh)),
+                          (0, 0, 255),
+                          3)
 
         eyes = eye_cascade.detectMultiScale(roi_gray)
         for (ex, ey, ew, eh) in eyes:

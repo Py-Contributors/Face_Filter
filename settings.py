@@ -14,6 +14,7 @@ UPLOADS_DIR = joinpath(BASE_DIR, "uploads")
 ASSETS_DIR = joinpath(BASE_DIR, "assets")
 FILTERS_DIR = joinpath(BASE_DIR, "filters")
 
+
 def create_directory(folder_name):
     """ Create new directory """
     if not isdir(folder_name):
@@ -29,10 +30,12 @@ def recreate_uploads_dir():
     create_directory("uploads")
     try:
         shutil.copy(
-            joinpath(ASSETS_DIR, "sample.jpg"), joinpath(UPLOADS_DIR, "sample.jpg")
+            joinpath(ASSETS_DIR, "sample.jpg"),
+            joinpath(UPLOADS_DIR, "sample.jpg")
         )
     except Exception as error:
         print(error)
+
 
 # creating uploads directory
 create_directory('uploads')

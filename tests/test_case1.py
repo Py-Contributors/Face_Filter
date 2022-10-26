@@ -4,6 +4,7 @@ from manage import app
 
 client = TestClient(app)
 
+
 def test_app():
     """ Test case for get Request """
     response = client.get("/")
@@ -33,7 +34,7 @@ def test_app():
     response = client.get("/uploads/sample.jpg")
 
     assert response.status_code == 200
-    #assert type(response.json()) == bytes
+    # assert type(response.json()) == bytes
 
     """ Test case for show command """
     response = client.get("/command/show")
@@ -46,4 +47,3 @@ def test_app():
 
     assert response.status_code == 200
     assert type(response.json()) == dict
-
