@@ -1,0 +1,16 @@
+.git
+.gitignore
+.pytest_cache
+__pycache__/
+*.py[cod]
+.Python
+.env
+.venv/
+venv/
+env/
+build/
+dist/
+*.egg-info/
+.DS_Store
+uploads/*
+!uploads/sample.jpg

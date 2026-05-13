@@ -1,0 +1,14 @@
+services:
+  app:
+    build: .
+    image: face-filter-api:latest
+    ports:
+      - "5000:5000"
+    volumes:
+      - uploads:/app/uploads
+    environment:
+      PYTHONUNBUFFERED: "1"
+    restart: unless-stopped
+
+volumes:
+  uploads:
